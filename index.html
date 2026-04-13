@@ -12,7 +12,7 @@
 :root{
   --bg:#08090D;--bg1:#0E1017;--bg2:#13161E;--bg3:#191D27;
   --border:#252A38;--borderlt:#333A50;
-  --text:#F0F2F8;--textm:#9BA3BC;--textd:#4A5068;
+  --text:#F5F7FA;--textm:#A8B0C8;--textd:#4A5068;
   --blue:#6AABFF;--green:#3ECFA0;--orange:#FF8C42;
   --purple:#C4A0FF;--gold:#D4B356;--red:#F25F5C;
   --eve:#8B6FD4;--eve-light:#C4A0FF;
@@ -55,9 +55,27 @@ html,body{height:100%;width:100%;background:var(--bg);color:var(--text);font-fam
 .card-red{border-color:rgba(242,95,92,.3);background:linear-gradient(150deg,#13161E 55%,rgba(60,15,15,.55) 100%)}
 .card-label{font-family:'Syne',sans-serif;font-size:10px;letter-spacing:.18em;text-transform:uppercase;font-weight:700;margin-bottom:10px}
 .card-label.blue{color:var(--blue)}.card-label.green{color:var(--green)}.card-label.orange{color:var(--orange)}.card-label.purple{color:var(--purple)}.card-label.gold{color:var(--gold)}.card-label.eve{color:var(--eve-light)}.card-label.red{color:var(--red)}
-.quote-text{font-family:'Cormorant Garamond',serif;font-size:22px;line-height:1.5;font-style:italic;color:#fff;font-weight:400}
-.translation-text{font-size:14px;line-height:1.65;color:var(--textm);font-weight:300}
-.translation-text strong{color:var(--text);font-weight:500}
+
+/* TEXT — HIGH CONTRAST */
+.quote-text{font-family:'Cormorant Garamond',serif;font-size:22px;line-height:1.5;font-style:italic;color:#FFFFFF;font-weight:400;opacity:1}
+.translation-text{font-size:14px;line-height:1.65;color:#C8D0E4;font-weight:300;opacity:1}
+.translation-text strong{color:#F5F7FA;font-weight:500}
+.body-text{font-size:14px;line-height:1.65;color:#F5F7FA;font-weight:300}
+
+/* GREETING — HOME ONLY */
+.home-greeting{padding:10px 16px 4px;flex-shrink:0}
+.home-greeting-line1{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:400;color:#FFFFFF;line-height:1.2}
+.home-greeting-line2{font-size:13px;color:var(--textm);margin-top:2px}
+
+/* CONTEXT SIGNAL */
+.context-signal{padding:6px 16px 8px;font-size:13px;color:var(--textm);font-style:italic;flex-shrink:0;min-height:28px}
+
+/* THEME BAR */
+.theme-bar{display:flex;gap:5px;padding:8px 16px 4px;flex-shrink:0;overflow-x:auto}
+.theme-bar::-webkit-scrollbar{display:none}
+.theme-pill{padding:4px 10px;border-radius:20px;font-family:'Syne',sans-serif;font-size:9px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;white-space:nowrap;border:1px solid var(--border);color:var(--textd);flex-shrink:0;transition:all .3s}
+.theme-pill.used{color:var(--gold);border-color:rgba(212,179,86,.35);background:rgba(212,179,86,.08)}
+.theme-pill.current{color:#fff;border-color:var(--gold);background:rgba(212,179,86,.18);box-shadow:0 0 8px rgba(212,179,86,.2)}
 
 /* PROMPTS */
 .prompt-list{display:flex;flex-direction:column;gap:8px}
@@ -65,23 +83,35 @@ html,body{height:100%;width:100%;background:var(--bg);color:var(--text);font-fam
 .prompt-item:active{border-color:var(--orange);background:rgba(255,140,66,.07)}
 .prompt-num{font-family:'Syne',sans-serif;font-size:10px;color:var(--orange);font-weight:700;flex-shrink:0;padding-top:2px}
 
-/* ACTION CHIPS */
+/* ACTION CHIPS — POSTURE (4) */
 .action-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .action-chip{padding:13px 10px;border-radius:10px;text-align:center;border:1px solid var(--border);background:rgba(255,255,255,.03);font-size:13px;color:var(--textm);cursor:pointer;transition:all .18s;font-weight:400;line-height:1.3}
 .action-chip:active{transform:scale(.96)}
 .action-chip.selected{border-color:var(--green);color:#fff;background:rgba(62,207,160,.12);box-shadow:0 0 0 1px rgba(62,207,160,.35)}
+
+/* EXECUTION LOCK — 3 TASKS */
+.task-list{display:flex;flex-direction:column;gap:7px}
+.task-row{display:flex;align-items:center;gap:8px}
+.task-num{font-family:'Syne',sans-serif;font-size:10px;font-weight:700;color:var(--purple);flex-shrink:0;width:16px}
+.task-input{flex:1;background:rgba(255,255,255,.05);border:1px solid var(--borderlt);border-radius:9px;padding:10px 12px;color:#fff;font-family:'DM Sans',sans-serif;font-size:13px;outline:none;transition:border-color .2s;line-height:1.4}
+.task-input:focus{border-color:var(--purple)}
+.task-input::placeholder{color:var(--textd)}
 
 /* INPUTS */
 .lock-input{width:100%;background:rgba(255,255,255,.05);border:1px solid var(--borderlt);border-radius:10px;padding:12px 14px;color:#fff;font-family:'DM Sans',sans-serif;font-size:14px;resize:none;outline:none;transition:border-color .2s;line-height:1.5}
 .lock-input:focus{border-color:var(--green)}
 .lock-input::placeholder{color:var(--textd)}
 .lock-input.eve-focus:focus{border-color:var(--eve-light)}
-.struggle-input{width:100%;background:rgba(255,255,255,.05);border:1px solid var(--borderlt);border-radius:14px;padding:14px 16px;color:#fff;font-family:'DM Sans',sans-serif;font-size:15px;resize:none;outline:none;min-height:100px;transition:border-color .2s;line-height:1.6}
-.struggle-input:focus{border-color:var(--blue)}
-.struggle-input::placeholder{color:var(--textd)}
 .journal-input{width:100%;background:rgba(255,255,255,.05);border:1px solid var(--borderlt);border-radius:14px;padding:14px 16px;color:#fff;font-family:'DM Sans',sans-serif;font-size:14px;resize:none;outline:none;min-height:120px;transition:border-color .2s;line-height:1.7}
 .journal-input:focus{border-color:var(--purple)}
 .journal-input::placeholder{color:var(--textd)}
+
+/* STRUGGLE INPUT — tap to reveal */
+.struggle-prompt-btn{width:100%;padding:16px;border-radius:14px;border:1px dashed var(--borderlt);background:rgba(255,255,255,.02);color:var(--textm);font-family:'DM Sans',sans-serif;font-size:14px;text-align:left;cursor:pointer;transition:all .2s;margin-bottom:10px}
+.struggle-prompt-btn:active{background:rgba(255,255,255,.05);border-color:var(--blue)}
+.struggle-input{width:100%;background:rgba(255,255,255,.05);border:1px solid var(--borderlt);border-radius:14px;padding:14px 16px;color:#fff;font-family:'DM Sans',sans-serif;font-size:15px;resize:none;outline:none;min-height:100px;transition:border-color .2s;line-height:1.6}
+.struggle-input:focus{border-color:var(--blue)}
+.struggle-input::placeholder{color:var(--textd)}
 
 /* QA CHIPS */
 .quick-actions{display:flex;flex-wrap:wrap;gap:6px;margin-top:9px}
@@ -108,18 +138,10 @@ html,body{height:100%;width:100%;background:var(--bg);color:var(--text);font-fam
 .streak-label{font-size:12px;color:var(--textm);line-height:1.5}
 .streak-label strong{display:block;color:var(--text);font-size:14px;font-weight:500}
 
-/* THEME PROGRESS */
-.theme-bar{display:flex;gap:5px;padding:10px 16px 6px;flex-shrink:0;overflow-x:auto}
-.theme-bar::-webkit-scrollbar{display:none}
-.theme-pill{padding:4px 10px;border-radius:20px;font-family:'Syne',sans-serif;font-size:9px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;white-space:nowrap;border:1px solid var(--border);color:var(--textd);flex-shrink:0;transition:all .3s}
-.theme-pill.used{color:var(--gold);border-color:rgba(212,179,86,.35);background:rgba(212,179,86,.08)}
-.theme-pill.current{color:#fff;border-color:var(--gold);background:rgba(212,179,86,.18);box-shadow:0 0 8px rgba(212,179,86,.2)}
-
 /* SECTION HDR */
 .section-hdr{margin-bottom:14px}
 .section-hdr h2{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:400;color:#fff;line-height:1.25}
 .section-hdr p{font-size:13px;color:var(--textm);margin-top:3px}
-.day-intro{padding:8px 16px 2px;font-family:'Cormorant Garamond',serif;font-size:15px;font-style:italic;color:var(--textd);flex-shrink:0}
 .divider{height:1px;background:var(--border);margin:12px 0}
 
 /* LOADING */
@@ -138,10 +160,14 @@ html,body{height:100%;width:100%;background:var(--bg);color:var(--text);font-fam
 .error-card p{font-size:13px;color:var(--red);line-height:1.5}
 
 .hidden{display:none!important}
+
+/* FEEDBACK */
 .feedback-row{display:flex;gap:8px;align-items:center;margin-top:10px}
 .feedback-q{font-size:12px;color:var(--textd);flex:1}
-.fb-btn{padding:5px 12px;border-radius:20px;font-size:12px;border:1px solid var(--border);background:transparent;color:var(--textm);cursor:pointer;transition:all .18s}
+.fb-btn{padding:5px 14px;border-radius:20px;font-size:12px;border:1px solid var(--border);background:transparent;color:var(--textm);cursor:pointer;transition:all .18s}
 .fb-btn:active{border-color:var(--green);color:var(--green)}
+.fb-confirm{font-size:12px;color:var(--green);padding:4px 0;margin-top:4px}
+
 @keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
 
 /* CATEGORY CHIPS */
@@ -214,19 +240,11 @@ html,body{height:100%;width:100%;background:var(--bg);color:var(--text);font-fam
 .sc-sw{width:42px;height:24px;border-radius:12px;position:relative;cursor:pointer;transition:background .2s;flex-shrink:0}
 .sc-sw::after{content:'';position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:50%;background:#fff;transition:transform .2s;box-shadow:0 1px 3px rgba(0,0,0,.4)}
 
-/* ═══ EVENING ENGINE SPECIFIC ═══ */
-.eve-header{
-  padding:20px 16px 14px;
-  background:linear-gradient(180deg,rgba(40,20,80,.5) 0%,transparent 100%);
-  border-bottom:1px solid rgba(139,111,212,.2);
-  flex-shrink:0;
-}
+/* EVENING */
+.eve-header{padding:20px 16px 14px;background:linear-gradient(180deg,rgba(40,20,80,.5) 0%,transparent 100%);border-bottom:1px solid rgba(139,111,212,.2);flex-shrink:0}
 .eve-greeting{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:400;color:#fff;line-height:1.3;margin-bottom:4px}
 .eve-sub{font-size:13px;color:var(--textm)}
-
 .eve-section-title{font-family:'Syne',sans-serif;font-size:10px;letter-spacing:.18em;text-transform:uppercase;font-weight:700;color:var(--eve-light);margin-bottom:10px}
-
-/* Committed actions review */
 .committed-list{display:flex;flex-direction:column;gap:8px;margin-bottom:14px}
 .committed-item{border-radius:12px;border:1px solid var(--border);background:var(--bg2);overflow:hidden}
 .committed-item-header{display:flex;align-items:center;gap:10px;padding:11px 14px}
@@ -235,26 +253,13 @@ html,body{height:100%;width:100%;background:var(--bg);color:var(--text);font-fam
 .committed-tag.midday{background:rgba(255,140,66,.15);color:var(--orange);border:1px solid rgba(255,140,66,.25)}
 .committed-tag.struggle{background:rgba(106,171,255,.15);color:var(--blue);border:1px solid rgba(106,171,255,.25)}
 .committed-text{font-size:13px;color:var(--text);flex:1;line-height:1.4}
-.committed-text.empty{color:var(--textd);font-style:italic}
-
-/* Accountability selector */
 .acct-selector{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:8px;padding:0 14px 12px}
 .acct-btn{padding:9px 8px;border-radius:10px;text-align:center;border:1px solid var(--border);background:transparent;font-size:12px;font-weight:500;color:var(--textm);cursor:pointer;transition:all .18s;line-height:1.3}
 .acct-btn:active{transform:scale(.95)}
-.acct-btn.done.sel     {border-color:var(--green);color:var(--green);background:rgba(62,207,160,.1)}
-.acct-btn.partial.sel  {border-color:var(--gold);color:var(--gold);background:rgba(212,179,86,.1)}
-.acct-btn.notdone.sel  {border-color:var(--red);color:var(--red);background:rgba(242,95,92,.1)}
-.acct-btn.still.sel    {border-color:var(--orange);color:var(--orange);background:rgba(255,140,66,.1)}
-
-/* Evening result cards */
-.eve-result-cards{margin-top:14px}
-
-/* Tomorrow lock */
-.tomorrow-lock{margin-top:4px}
-.tomorrow-lock textarea{border-color:rgba(139,111,212,.4)}
-.tomorrow-lock textarea:focus{border-color:var(--eve-light)}
-
-/* Day score */
+.acct-btn.done.sel{border-color:var(--green);color:var(--green);background:rgba(62,207,160,.1)}
+.acct-btn.partial.sel{border-color:var(--gold);color:var(--gold);background:rgba(212,179,86,.1)}
+.acct-btn.notdone.sel{border-color:var(--red);color:var(--red);background:rgba(242,95,92,.1)}
+.acct-btn.still.sel{border-color:var(--orange);color:var(--orange);background:rgba(255,140,66,.1)}
 .day-score-row{display:flex;align-items:center;gap:16px;padding:14px 16px;border-radius:12px;background:linear-gradient(135deg,rgba(40,20,80,.6) 0%,var(--bg2) 100%);border:1px solid rgba(139,111,212,.3);margin-bottom:11px}
 .day-score-num{font-family:'Cormorant Garamond',serif;font-size:48px;line-height:1;font-weight:600;color:var(--eve-light)}
 .day-score-label{font-size:12px;color:var(--textm);line-height:1.5}
@@ -278,7 +283,6 @@ html,body{height:100%;width:100%;background:var(--bg);color:var(--text);font-fam
 
 /* HISTORY */
 .hist-entry{padding:13px 15px;border-radius:12px;background:var(--bg2);border:1px solid var(--border);margin-bottom:9px}
-.hist-entry:active{border-color:var(--borderlt)}
 .hist-meta{display:flex;justify-content:space-between;margin-bottom:5px}
 .hist-date{font-size:11px;color:var(--textd);letter-spacing:.06em;text-transform:uppercase}
 .hist-badge{font-size:10px;padding:2px 8px;border-radius:10px;font-weight:600;letter-spacing:.05em}
@@ -315,28 +319,66 @@ html,body{height:100%;width:100%;background:var(--bg);color:var(--text);font-fam
     <div><div class="topbar-title">ClearMind OS</div><div class="topbar-date" id="home-date"></div></div>
     <span class="time-badge" id="time-badge"></span>
   </div>
+  <!-- Greeting — home only -->
+  <div class="home-greeting" id="home-greeting-block">
+    <div class="home-greeting-line1" id="home-greeting-name"></div>
+    <div class="home-greeting-line2" id="home-greeting-date"></div>
+  </div>
+  <!-- Context signal -->
+  <div class="context-signal" id="context-signal-el"></div>
+  <!-- Theme bar -->
   <div class="theme-bar" id="theme-bar"></div>
-  <div class="day-intro" id="day-intro"></div>
   <div class="scroll-body">
     <div class="streak-row">
       <div class="streak-num" id="streak-num">0</div>
       <div class="streak-label"><strong>Day Streak 🔥</strong>Complete today's session to hold it.</div>
     </div>
-    <div id="home-ai-status" class="ai-status"><div class="dot-pulse"></div><span id="home-ai-msg">Generating today's session…</span></div>
+    <div id="home-ai-status" class="ai-status"><div class="dot-pulse"></div><span>Generating today's session…</span></div>
     <div id="home-error" class="error-card hidden"><p id="home-error-msg"></p><button class="cta-btn ghost" style="margin-top:8px;padding:10px" onclick="loadHomeContent()">Retry</button></div>
     <div id="home-content" class="hidden">
-      <div class="card card-gold"><div class="card-label gold">Original Thought · Meditations</div><div class="quote-text" id="home-quote"></div></div>
-      <div class="card card-blue"><div class="card-label blue">Direct Translation</div><div class="translation-text" id="home-translation" style="color:var(--text)"></div></div>
-      <div class="card card-orange"><div class="card-label orange">Modern Application</div><div class="translation-text" id="home-application"></div></div>
-      <div class="card card-green"><div class="card-label green">Choose Your Posture Today</div><div class="action-grid" id="home-actions"></div></div>
+      <!-- Original Thought -->
+      <div class="card card-gold">
+        <div class="card-label gold">Original Thought · Meditations</div>
+        <div class="quote-text" id="home-quote"></div>
+      </div>
+      <!-- Direct Translation -->
+      <div class="card card-blue">
+        <div class="card-label blue">Direct Translation</div>
+        <div class="body-text" id="home-translation"></div>
+      </div>
+      <!-- Modern Application -->
+      <div class="card card-orange">
+        <div class="card-label orange">Modern Application</div>
+        <div class="translation-text" id="home-application"></div>
+      </div>
+      <!-- Posture (4 fixed options) -->
+      <div class="card card-green">
+        <div class="card-label green">Choose Your Posture Today</div>
+        <div class="action-grid" id="home-actions">
+          <div class="action-chip" onclick="selectAction(this,'Focus')">Focus</div>
+          <div class="action-chip" onclick="selectAction(this,'Act')">Act</div>
+          <div class="action-chip" onclick="selectAction(this,'Endure')">Endure</div>
+          <div class="action-chip" onclick="selectAction(this,'Reflect')">Reflect</div>
+        </div>
+      </div>
+      <!-- Execution Lock — 3 tasks -->
       <div class="card card-purple">
-        <div class="card-label purple">Execution Lock · Next 3 Hours</div>
-        <p class="translation-text" style="color:var(--text);margin-bottom:10px">Name one thing you will actually do.</p>
-        <textarea class="lock-input" id="home-lock" rows="2" placeholder="I will…"></textarea>
-        <div class="quick-actions" id="home-qa"></div>
+        <div class="card-label purple">Execution Lock · 3 Tasks</div>
+        <p class="translation-text" style="color:var(--text);margin-bottom:12px">What will you actually do today?</p>
+        <div class="task-list">
+          <div class="task-row"><span class="task-num">1</span><input class="task-input" id="task-1" type="text" placeholder="First task…" oninput="checkHomeComplete()"/></div>
+          <div class="task-row"><span class="task-num">2</span><input class="task-input" id="task-2" type="text" placeholder="Second task…" oninput="checkHomeComplete()"/></div>
+          <div class="task-row"><span class="task-num">3</span><input class="task-input" id="task-3" type="text" placeholder="Third task…" oninput="checkHomeComplete()"/></div>
+        </div>
+        <div id="task-ai-loading" class="hidden" style="padding:8px 0"><div class="ai-status" style="margin-bottom:0"><div class="dot-pulse"></div><span>Suggesting tasks…</span></div></div>
       </div>
       <button class="cta-btn green" id="home-complete" disabled onclick="completeSession()">Complete Session</button>
-      <div class="feedback-row"><span class="feedback-q">Did this help?</span><button class="fb-btn" onclick="fbTap(this,'👍 Thanks')">👍 Yes</button><button class="fb-btn" onclick="fbTap(this,'👎 Noted')">👎 No</button></div>
+      <div class="feedback-row">
+        <span class="feedback-q">Did this help?</span>
+        <button class="fb-btn" id="fb-home-yes" onclick="homeFeedbackYes(this)">👍 Yes</button>
+        <button class="fb-btn" id="fb-home-no"  onclick="homeFeedbackNo(this)">👎 No</button>
+      </div>
+      <div id="fb-home-confirm" class="fb-confirm hidden"></div>
     </div>
   </div>
 </div>
@@ -345,9 +387,13 @@ html,body{height:100%;width:100%;background:var(--bg);color:var(--text);font-fam
 <div class="screen" id="screen-struggle">
   <div class="topbar"><div class="topbar-title">BEHAVIOR ENGINE</div><span style="font-size:12px;color:var(--textm)">Pattern → Correction</span></div>
   <div class="scroll-body">
-    <div class="section-hdr"><h2>What are you struggling with?</h2><p>Be specific. Vague input returns vague output.</p></div>
+    <div class="section-hdr"><h2>What are you dealing with?</h2><p>Be specific. Vague input returns vague output.</p></div>
     <div class="brutal-toggle"><div class="toggle-label">Direct Mode<span>Firm correction, no softening.</span></div><div class="toggle-switch" id="brutal-switch" onclick="toggleBrutal()"></div></div>
-    <textarea class="struggle-input" id="struggle-input" placeholder="Describe what is happening. What have you been doing or avoiding?…" rows="4"></textarea>
+
+    <!-- Tap-to-reveal textarea -->
+    <button class="struggle-prompt-btn" id="struggle-prompt-btn" onclick="revealStruggleInput()">Describe what you're dealing with…</button>
+    <textarea class="struggle-input hidden" id="struggle-input" placeholder="What is happening? What have you been doing or avoiding?…" rows="4"></textarea>
+
     <div class="category-chips">
       <button class="cat-chip fear"   onclick="toggleCat(this,'fear')">Fear</button>
       <button class="cat-chip dist"   onclick="toggleCat(this,'dist')">Distraction</button>
@@ -357,18 +403,27 @@ html,body{height:100%;width:100%;background:var(--bg);color:var(--text);font-fam
     <button class="cta-btn blue" onclick="runBehaviorEngine()">Analyze →</button>
     <div id="struggle-loading" class="hidden" style="padding:14px 0"><div class="ai-status"><div class="dot-pulse"></div><span>Behavior Engine processing…</span></div></div>
     <div id="struggle-error" class="error-card hidden" style="margin-top:12px"><p id="struggle-error-msg"></p></div>
+
     <div id="struggle-results" class="hidden" style="margin-top:14px">
-      <div class="card card-orange"><div class="card-label orange">Pattern Identified</div><div class="translation-text" id="s-pattern" style="color:var(--text)"></div></div>
-      <div class="card card-blue"><div class="card-label blue">What You Are Missing</div><div class="translation-text" id="s-insight" style="color:var(--text)"></div></div>
-      <div class="card card-purple"><div class="card-label purple">Correction</div><div class="translation-text" id="s-correction" style="color:var(--text)"></div></div>
+      <div class="card card-orange"><div class="card-label orange">Pattern Identified</div><div class="body-text" id="s-pattern"></div></div>
+      <div class="card card-blue"><div class="card-label blue">What You Are Missing</div><div class="body-text" id="s-insight"></div></div>
+      <div class="card card-purple"><div class="card-label purple">Correction</div><div class="body-text" id="s-correction"></div></div>
       <div class="card card-green">
+        <div class="card-label green">Action Steps</div>
+        <div class="action-steps" id="s-steps"></div>
+      </div>
+      <div class="card" style="border-color:rgba(62,207,160,.25);background:var(--bg2)">
         <div class="card-label green">Lock In · Next 10 Minutes</div>
         <p class="translation-text" style="color:var(--text);margin-bottom:10px">One thing. Right now.</p>
-        <div class="translation-text" id="s-action-display" style="color:var(--green);font-style:italic;margin-bottom:10px"></div>
         <textarea class="lock-input" id="s-lock" rows="2" placeholder="In the next 10 minutes I will…"></textarea>
       </div>
       <button class="cta-btn green" onclick="lockStruggle()">Lock It In →</button>
-      <div class="feedback-row"><span class="feedback-q">Did this help?</span><button class="fb-btn" onclick="fbTap(this,'👍 Thanks')">👍 Yes</button><button class="fb-btn" onclick="fbTap(this,'👎 Noted')">👎 No</button></div>
+      <div class="feedback-row">
+        <span class="feedback-q">Did this help?</span>
+        <button class="fb-btn" onclick="struggleFeedbackYes(this)">👍 Yes</button>
+        <button class="fb-btn" onclick="struggleFeedbackNo(this)">👎 No</button>
+      </div>
+      <div id="fb-struggle-confirm" class="fb-confirm hidden"></div>
     </div>
   </div>
 </div>
@@ -376,15 +431,11 @@ html,body{height:100%;width:100%;background:var(--bg);color:var(--text);font-fam
 <!-- ══ EVENING ENGINE ══ -->
 <div class="screen" id="screen-evening">
   <div class="eve-header">
-    <div class="eve-greeting" id="eve-greeting">Good evening. Let's review your day.</div>
+    <div class="eve-greeting" id="eve-greeting"></div>
     <div class="eve-sub" id="eve-date-sub"></div>
   </div>
   <div class="scroll-body" id="eve-scroll">
-
-    <!-- PHASE 1: INPUT -->
     <div id="eve-phase-input">
-
-      <!-- Day score from committed actions -->
       <div id="eve-day-score" class="day-score-row hidden">
         <div class="day-score-num" id="eve-score-num">0%</div>
         <div class="day-score-label">
@@ -393,45 +444,29 @@ html,body{height:100%;width:100%;background:var(--bg);color:var(--text);font-fam
           <div class="score-bar"><div class="score-bar-fill" id="eve-score-fill" style="width:0%"></div></div>
         </div>
       </div>
-
-      <!-- Committed actions -->
       <div class="eve-section-title">Today You Committed To</div>
-      <div class="committed-list" id="eve-committed-list">
-        <div style="font-size:13px;color:var(--textd);padding:12px;text-align:center">No sessions logged today yet.<br>Complete a morning or midday session first.</div>
-      </div>
-
-      <!-- Review button -->
+      <div class="committed-list" id="eve-committed-list"></div>
       <button class="cta-btn eve-btn-cta" id="eve-review-btn" onclick="runEveningEngine()" disabled>Review My Day →</button>
-
       <div id="eve-loading" class="hidden" style="padding:14px 0"><div class="ai-status eve"><div class="dot-pulse"></div><span>Evening Engine analyzing your day…</span></div></div>
       <div id="eve-error" class="error-card hidden" style="margin-top:12px"><p id="eve-error-msg"></p><button class="cta-btn ghost" style="margin-top:8px;padding:10px" onclick="runEveningEngine()">Retry</button></div>
     </div>
-
-    <!-- PHASE 2: RESULTS -->
     <div id="eve-phase-results" class="hidden">
-
-      <div id="eve-result-cards" class="eve-result-cards">
-        <div class="card card-eve"><div class="card-label eve">Day Summary</div><div class="translation-text" id="eve-r-summary" style="color:var(--text)"></div></div>
-        <div class="card card-orange"><div class="card-label orange">Behavioral Pattern</div><div class="translation-text" id="eve-r-pattern"></div></div>
-        <div class="card card-red"><div class="card-label red">Accountability</div><div class="translation-text" id="eve-r-accountability" style="color:var(--text)"></div></div>
-        <div class="card card-blue"><div class="card-label blue">Adjustment</div><div class="translation-text" id="eve-r-adjustment" style="color:var(--text)"></div></div>
-        <div class="card card-green"><div class="card-label green">Tomorrow's Focus</div><div class="translation-text" id="eve-r-tomorrow" style="color:var(--text);font-style:italic"></div></div>
-      </div>
-
+      <div class="card card-eve"><div class="card-label eve">Day Summary</div><div class="body-text" id="eve-r-summary"></div></div>
+      <div class="card card-orange"><div class="card-label orange">Behavioral Pattern</div><div class="translation-text" id="eve-r-pattern"></div></div>
+      <div class="card card-red"><div class="card-label red">Accountability</div><div class="body-text" id="eve-r-accountability"></div></div>
+      <div class="card card-blue"><div class="card-label blue">Adjustment</div><div class="body-text" id="eve-r-adjustment"></div></div>
+      <div class="card card-green"><div class="card-label green">Tomorrow's Focus</div><div class="body-text" id="eve-r-tomorrow" style="font-style:italic"></div></div>
       <div class="divider"></div>
-
-      <!-- Tomorrow lock -->
-      <div class="tomorrow-lock">
-        <div class="eve-section-title">What Will You Do Differently Tomorrow?</div>
-        <textarea class="lock-input eve-focus" id="eve-tomorrow-input" rows="3" placeholder="Tomorrow I will…"></textarea>
-        <button class="cta-btn eve-btn-cta" id="eve-lock-btn" onclick="lockTomorrow()">Lock Tomorrow →</button>
+      <div class="eve-section-title">What Will You Do Differently Tomorrow?</div>
+      <textarea class="lock-input eve-focus" id="eve-tomorrow-input" rows="3" placeholder="Tomorrow I will…"></textarea>
+      <button class="cta-btn eve-btn-cta" onclick="lockTomorrow()">Lock Tomorrow →</button>
+      <div class="feedback-row" style="margin-top:14px">
+        <span class="feedback-q">Did this review help?</span>
+        <button class="fb-btn" onclick="fbTap(this,'👍 Thanks')">👍 Yes</button>
+        <button class="fb-btn" onclick="fbTap(this,'👎 Noted')">👎 No</button>
       </div>
-
-      <div class="feedback-row" style="margin-top:14px"><span class="feedback-q">Did this review help?</span><button class="fb-btn" onclick="fbTap(this,'👍 Thanks')">👍 Yes</button><button class="fb-btn" onclick="fbTap(this,'👎 Noted')">👎 No</button></div>
-
       <button class="cta-btn ghost" style="margin-top:12px" onclick="resetEveningPhase()">← Review Again</button>
     </div>
-
   </div>
 </div>
 
@@ -444,6 +479,7 @@ html,body{height:100%;width:100%;background:var(--bg);color:var(--text);font-fam
     <button class="med-nav-link"        id="mlink-silent"  onclick="setMeditateMode('silent')">Silence</button>
   </div>
   <div class="scroll-body">
+    <!-- GUIDED RESET -->
     <div id="mode-guided">
       <div class="step-flow" id="guided-steps"><div class="sf-dot current"></div><div class="sf-dot"></div><div class="sf-dot"></div><div class="sf-dot"></div><div class="sf-dot"></div></div>
       <div id="g-step-1">
@@ -453,6 +489,8 @@ html,body{height:100%;width:100%;background:var(--bg);color:var(--text);font-fam
           <div class="state-chip" onclick="selectState(this,'anger')"><div class="s-icon">🔥</div><div class="s-label">Anger</div></div>
           <div class="state-chip" onclick="selectState(this,'fear')"><div class="s-icon">😰</div><div class="s-label">Fear</div></div>
           <div class="state-chip" onclick="selectState(this,'confusion')"><div class="s-icon">🌫</div><div class="s-label">Confusion</div></div>
+          <div class="state-chip" onclick="selectState(this,'grateful')"><div class="s-icon">🙏</div><div class="s-label">Thankful</div></div>
+          <div class="state-chip" onclick="selectState(this,'calm')"><div class="s-icon">🌊</div><div class="s-label">Calm</div></div>
         </div>
       </div>
       <div id="g-step-2" class="hidden">
@@ -461,13 +499,13 @@ html,body{height:100%;width:100%;background:var(--bg);color:var(--text);font-fam
         <button class="cta-btn ghost" onclick="guidedNext(3)">I'm Calm. Continue →</button>
       </div>
       <div id="g-step-3" class="hidden">
-        <div id="g-insight-loading" class="ai-status"><div class="dot-pulse"></div><span>Retrieving Stoic insight…</span></div>
+        <div id="g-insight-loading" class="ai-status"><div class="dot-pulse"></div><span>Retrieving insight…</span></div>
         <div id="g-insight-content" class="hidden"><div class="card card-purple"><div class="card-label purple">For This Moment</div><div class="quote-text" id="g-quote" style="font-size:19px"></div></div></div>
         <button class="cta-btn ghost" onclick="guidedNext(4)">Understood. Continue →</button>
       </div>
       <div id="g-step-4" class="hidden">
         <div class="section-hdr"><h2>Reframe it.</h2></div>
-        <div class="card card-blue"><div class="card-label blue">The Reframe</div><div class="translation-text" id="g-reframe" style="color:var(--text)"></div></div>
+        <div class="card card-blue"><div class="card-label blue">The Reframe</div><div class="body-text" id="g-reframe"></div></div>
         <button class="cta-btn ghost" onclick="guidedNext(5)">Continue →</button>
       </div>
       <div id="g-step-5" class="hidden">
@@ -476,6 +514,7 @@ html,body{height:100%;width:100%;background:var(--bg);color:var(--text);font-fam
         <button class="cta-btn purple-btn" onclick="completeGuided()" style="margin-top:10px">Complete Reset</button>
       </div>
     </div>
+    <!-- REFLECTION -->
     <div id="mode-reflect" class="hidden">
       <div class="section-hdr"><h2>Write freely.</h2><p>Raw. No judgment.</p></div>
       <textarea class="journal-input" id="journal-input" rows="6" placeholder="What is weighing on you? What patterns do you see in yourself?…"></textarea>
@@ -483,11 +522,12 @@ html,body{height:100%;width:100%;background:var(--bg);color:var(--text);font-fam
       <div id="journal-loading" class="hidden" style="padding:14px 0"><div class="ai-status"><div class="dot-pulse"></div><span>Behavior Engine analyzing…</span></div></div>
       <div id="journal-error" class="error-card hidden" style="margin-top:12px"><p id="journal-error-msg"></p></div>
       <div id="journal-result" class="hidden" style="margin-top:14px">
-        <div class="card card-blue"><div class="card-label blue">Core Issue</div><div class="translation-text" id="j-core" style="color:var(--text)"></div></div>
+        <div class="card card-blue"><div class="card-label blue">Core Issue</div><div class="body-text" id="j-core"></div></div>
         <div class="card card-orange"><div class="card-label orange">Pattern Detected</div><div class="translation-text" id="j-pattern"></div></div>
         <div class="card card-gold"><div class="card-label gold">Correction</div><div class="quote-text" id="j-principle" style="font-size:17px"></div></div>
       </div>
     </div>
+    <!-- SILENT -->
     <div id="mode-silent" class="hidden">
       <div class="section-hdr"><h2>Enter stillness.</h2><p>Nothing to do. Nowhere to be.</p></div>
       <div class="sc-row"><div class="sc-label"><strong>🔔 Completion Sound</strong><span>Soft chime when timer ends</span></div><div class="sc-sw" id="sw-sound" onclick="toggleSC('sound')"></div></div>
@@ -520,6 +560,21 @@ html,body{height:100%;width:100%;background:var(--bg);color:var(--text);font-fam
   <div class="topbar"><div class="topbar-title">SETTINGS</div></div>
   <div class="scroll-body">
     <div class="settings-section">
+      <div class="settings-section-title">Getting Started</div>
+      <div class="settings-row" style="flex-direction:column;align-items:flex-start;gap:8px">
+        <div class="settings-row-label">What this app does</div>
+        <div class="settings-row-sub">ClearMindOS helps you think clearly, act decisively, and stay accountable through structured daily reflection powered by AI and Meditations by Marcus Aurelius.</div>
+        <div class="settings-row-label" style="margin-top:10px">How to use</div>
+        <div class="settings-row-sub" style="line-height:2">
+          <strong style="color:var(--gold)">Morning</strong> — Set direction<br>
+          <strong style="color:var(--orange)">Struggle</strong> — Break resistance<br>
+          <strong style="color:var(--eve-light)">Review</strong> — Check your execution<br>
+          <strong style="color:var(--purple)">Meditate</strong> — Reset your thinking
+        </div>
+        <button class="cta-btn ghost" style="margin-top:6px;padding:12px" onclick="runOnboarding()">Start Guide →</button>
+      </div>
+    </div>
+    <div class="settings-section">
       <div class="settings-section-title">API Configuration</div>
       <div class="settings-row" style="flex-direction:column;align-items:flex-start;gap:10px">
         <div><div class="settings-row-label">OpenRouter API Key</div><div class="settings-row-sub">Required for AI content generation</div></div>
@@ -547,7 +602,7 @@ html,body{height:100%;width:100%;background:var(--bg);color:var(--text);font-fam
       </div>
     </div>
     <div class="settings-section">
-      <div class="settings-section-title">Your Name (for Evening greeting)</div>
+      <div class="settings-section-title">Your Name</div>
       <div class="settings-row" style="flex-direction:column;align-items:flex-start;gap:8px">
         <input class="lock-input" type="text" id="user-name-input" placeholder="Enter your name…" style="font-size:14px" oninput="saveName()"/>
       </div>
@@ -563,7 +618,18 @@ html,body{height:100%;width:100%;background:var(--bg);color:var(--text);font-fam
     </div>
     <div class="settings-section">
       <div class="settings-section-title">About</div>
-      <div class="settings-row"><div><div class="settings-row-label">ClearMind OS</div><div class="settings-row-sub">Powered by Meditations · Marcus Aurelius</div></div><span style="font-family:'Syne',sans-serif;font-size:10px;color:var(--textd);letter-spacing:.1em">v3.0</span></div>
+      <div class="settings-row"><div><div class="settings-row-label">ClearMind OS</div><div class="settings-row-sub">Powered by Meditations · Marcus Aurelius</div></div><span style="font-family:'Syne',sans-serif;font-size:10px;color:var(--textd);letter-spacing:.1em">v4.0</span></div>
+    </div>
+    <div class="settings-section">
+      <div class="settings-section-title">Developer</div>
+      <div class="settings-row" style="flex-direction:column;align-items:flex-start;gap:6px">
+        <div class="settings-row-label">Sample Data</div>
+        <div class="settings-row-sub">7-day session history for testing</div>
+        <div style="display:flex;gap:8px;margin-top:4px">
+          <button class="cta-btn ghost" style="width:auto;margin-top:0;padding:8px 16px;font-size:11px" onclick="reloadSample()">Reload Sample</button>
+          <button class="cta-btn danger" style="width:auto;margin-top:0;padding:8px 16px;font-size:11px" onclick="wipeSample()">Wipe All Data</button>
+        </div>
+      </div>
     </div>
   </div>
 </div>
@@ -572,7 +638,7 @@ html,body{height:100%;width:100%;background:var(--bg);color:var(--text);font-fam
 <nav class="bottom-nav">
   <button class="nav-btn active" id="nav-home"     onclick="goTo('home')"><span class="nav-icon">☀</span><span class="nav-label">Home</span></button>
   <button class="nav-btn"        id="nav-struggle" onclick="goTo('struggle')"><span class="nav-icon">⚡</span><span class="nav-label">Struggle</span></button>
-  <button class="nav-btn eve-btn" id="nav-evening" onclick="goTo('evening')"><span class="nav-icon">🌙</span><span class="nav-label">Evening</span></button>
+  <button class="nav-btn eve-btn" id="nav-evening" onclick="goTo('evening')"><span class="nav-icon">🌙</span><span class="nav-label">Review</span></button>
   <button class="nav-btn"        id="nav-meditate" onclick="goTo('meditate')"><span class="nav-icon">◯</span><span class="nav-label">Meditate</span></button>
   <button class="nav-btn"        id="nav-settings" onclick="goTo('settings')"><span class="nav-icon">⚙</span><span class="nav-label">Settings</span></button>
 </nav>
@@ -604,26 +670,26 @@ const CACHE_TTL = 6 * 60 * 60 * 1000;
 const STOIC_SYSTEM = `You are the STOIC ENGINE of ClearMindOS.
 Your knowledge source is STRICTLY the book "Meditations" by Marcus Aurelius.
 Do NOT introduce ideas outside the philosophy, tone, or worldview of this book.
-Your role: Extract and express ideas consistent with Meditations. Preserve its tone and philosophical depth. Translate into practical modern understanding.
 STYLE: Calm. Grounded. Reflective. Philosophical. No fluff.
-OUTPUT FORMAT (STRICT JSON ONLY — no markdown, no backticks, no explanation):
+OUTPUT FORMAT (STRICT JSON ONLY — no markdown, no backticks, no extra text):
 {"original":"A classical-style statement inspired directly by Meditations (slightly archaic tone, 1-3 sentences)","translation":"Clear direct meaning in simple English (2-3 sentences max)","application":"How this applies in real life today — short and practical (2-3 sentences max)","actions":["Short actionable step 1","Short actionable step 2","Short actionable step 3"]}
-RULES: Each field max 2-5 lines. Keep it concise. No emojis. No text outside JSON.`;
+RULES: Each field max 2-5 lines. Concise. No emojis. No text outside JSON.`;
 
 const BEHAVIOR_SYSTEM = `You are the BEHAVIOR ENGINE of ClearMindOS.
-Your role: Detect behavioral patterns. Identify avoidance, inconsistency, or emotional reactions. Provide correction. Push the user toward action.
-TONE: Firm. Direct. Respectful. Encouraging. Slightly challenging. Never insulting.
-OUTPUT FORMAT (STRICT JSON ONLY — no markdown, no backticks, no explanation):
-{"pattern":"Observed pattern (1-2 sentences)","insight":"What the user is doing wrong or missing (1-2 sentences)","correction":"Reframe using grounded reasoning (1-2 sentences)","action":"One clear immediate action (1 sentence)"}
+Your role: Detect behavioral patterns. Identify avoidance, inconsistency, or emotional reactions. Provide correction. Push toward action.
+TONE: Firm. Direct. Respectful. Slightly challenging. Never insulting.
+Speak directly to the person as "you", not "the user".
+OUTPUT FORMAT (STRICT JSON ONLY — no markdown, no backticks, no extra text):
+{"pattern":"Observed pattern (1-2 sentences)","insight":"What you are doing wrong or missing (1-2 sentences)","correction":"Reframe using grounded reasoning (1-2 sentences)","action":"One clear immediate action (1 sentence)","actions":["Immediate step 1","Immediate step 2","Immediate step 3"]}
 RULES: 1-2 lines per field. No fluff. No emojis. No extra text outside JSON. Be specific, not generic.`;
 
 const EVENING_SYSTEM = `You are the EVENING ENGINE of ClearMindOS.
-Your role: Review the user's day with honesty and precision. Identify what was done, what was avoided, and what pattern emerges. Provide a clear behavioral correction and a specific action for tomorrow.
-INPUT: The user will give you their committed actions for today, their accountability ratings (Done / Partially Done / Not Done / Still Struggling), and recent behavioral history.
-TONE: Direct. Honest. Grounded. Not harsh. Not soft. Truthful.
-OUTPUT FORMAT (STRICT JSON ONLY — no markdown, no backticks, no explanation):
-{"summary":"Honest 1-2 sentence summary of how the day went based on the data","pattern":"The behavioral pattern you observe across today and recent history (1-2 sentences)","accountability":"Direct honest statement about whether the user followed through — name specifics (1-2 sentences)","adjustment":"One concrete change in approach or thinking for tomorrow (1-2 sentences)","tomorrow":"One specific, actionable focus for tomorrow (1 sentence — start with a verb)"}
-RULES: Be specific — reference the actual actions given. No generic statements. No emojis. No text outside JSON. 1-2 sentences per field maximum.`;
+Your role: Review the day honestly. Identify what was done, what was avoided, and what pattern emerges.
+TONE: Direct. Honest. Grounded. Truthful.
+Speak directly to the person as "you", not "the user".
+OUTPUT FORMAT (STRICT JSON ONLY — no markdown, no backticks, no extra text):
+{"summary":"Honest 1-2 sentence summary of how the day went","pattern":"Behavioral pattern observed across today and recent history (1-2 sentences)","accountability":"Direct honest statement about whether you followed through — name specifics (1-2 sentences)","adjustment":"One concrete change in approach for tomorrow (1-2 sentences)","tomorrow":"One specific actionable focus for tomorrow (1 sentence — start with a verb)"}
+RULES: Reference actual actions given. No generic statements. No emojis. No text outside JSON.`;
 
 const SILENT_QUOTES = [
   `"The present moment is all you ever have."`,
@@ -642,6 +708,7 @@ let guidedState=null, guidedStep=1, breatheInterval=null;
 let soundOn=true, vibrateOn=true, audioCtx=null;
 let currentGuidedData=null;
 let eveCommittedItems=[], eveAccountability={};
+let lastStruggleInput='';
 
 // ══════════════════════════════════════════════════════════════
 // PERSISTENCE
@@ -651,11 +718,9 @@ const LS = {
   set: (k,v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch(e){} },
   del: k => { try { localStorage.removeItem(k); } catch(e){} }
 };
-
 function getApiKey(){ return localStorage.getItem('cmos_api_key') || ''; }
 function getModel(){ return localStorage.getItem('cmos_model') || 'google/gemini-flash-1.5'; }
 function getUserName(){ return localStorage.getItem('cmos_name') || ''; }
-
 function getThemeProgress(){ return LS.get('cmos_themes') || { used:[], current:null }; }
 function saveThemeProgress(p){ LS.set('cmos_themes', p); }
 
@@ -678,7 +743,7 @@ function getBehaviorMemory(){
   const struggles = recent.filter(s=>s.type==='struggle').map(s=>s.issue).filter(Boolean);
   const completed = recent.filter(s=>s.completed).map(s=>s.action).filter(Boolean);
   const missed = recent.filter(s=>!s.completed && s.action).map(s=>s.action).filter(Boolean);
-  let mem = '\n\nUser recent behavior (last 7 days):';
+  let mem = '\n\nRecent behavior (last 7 days):';
   if(struggles.length) mem += `\nRepeated struggles: ${struggles.slice(-3).join('; ')}`;
   if(completed.length) mem += `\nCompleted actions: ${completed.slice(-3).join('; ')}`;
   if(missed.length) mem += `\nMissed actions: ${missed.slice(-3).join('; ')}`;
@@ -738,7 +803,6 @@ function parseJSON(raw){
   catch(e){ throw new Error('Could not parse AI response. Retry.'); }
 }
 
-// ── RAW TEXT CALL (no JSON parsing) ──────────────────────────
 async function callAIRaw(userMessage){
   const key = getApiKey();
   if(!key) throw new Error('no key');
@@ -752,42 +816,26 @@ async function callAIRaw(userMessage){
   return (data?.choices?.[0]?.message?.content||'').trim();
 }
 
-// ── CONTEXT SIGNAL ────────────────────────────────────────────
-const SIGNAL_CACHE_TTL = 3 * 60 * 60 * 1000; // 3 hours
+const SIGNAL_CACHE_TTL = 3 * 60 * 60 * 1000;
 function signalCacheKey(){ return `cmos_signal_${new Date().toDateString()}_${getTimeOfDay()}`; }
-
 async function getContextSignal(){
-  // Return cache if valid
   const cached = LS.get(signalCacheKey());
   if(cached && (Date.now()-cached.ts) < SIGNAL_CACHE_TTL) return cached.text;
-
-  const tod = getTimeOfDay();
   const memory = getBehaviorMemory();
-  // Need at least some memory to be meaningful
   if(!memory || memory.length < 30) return null;
-
   const prompt = `You are the BEHAVIOR ENGINE of ClearMindOS.
-Generate ONE behavioral signal sentence for the user.
-Time of day: ${tod}
+Generate ONE behavioral signal sentence for the person.
+Time of day: ${getTimeOfDay()}
 ${memory}
-RULES:
-- One sentence only. Max 14 words.
-- Direct and personal tone.
-- Slightly challenging — hold the user accountable.
-- No philosophy. No emojis. No fluff. No quotation marks.
-- Start with "You" or a verb or an observation about their behavior.
-Return ONLY the sentence. Nothing else.`;
-
+RULES: One sentence only. Max 14 words. Direct and personal. Slightly challenging. No philosophy. No emojis. No fluff. No quotation marks.
+Return ONLY the sentence.`;
   try {
     const text = await callAIRaw(prompt);
-    // Validate: reject if too long, contains JSON, or is empty
     const clean = text.replace(/["""]/g,'').replace(/^\s*-\s*/,'').trim();
     if(!clean || clean.length > 120 || clean.includes('{')) return null;
     LS.set(signalCacheKey(), { text:clean, ts:Date.now() });
     return clean;
-  } catch(e){
-    return null;
-  }
+  } catch(e){ return null; }
 }
 
 // ══════════════════════════════════════════════════════════════
@@ -795,6 +843,8 @@ Return ONLY the sentence. Nothing else.`;
 // ══════════════════════════════════════════════════════════════
 function getTimeOfDay(){ const h=new Date().getHours(); return h<12?'morning':h<17?'midday':'evening'; }
 function formatDate(){ return new Date().toLocaleDateString('en-US',{month:'long',day:'numeric'}); }
+function todayCacheKey(){ return `cmos_home_${new Date().toDateString()}_${getTimeOfDay()}`; }
+
 function getGreeting(){
   const name = getUserName();
   const tod = getTimeOfDay();
@@ -804,7 +854,25 @@ function getGreeting(){
   if(tod==='midday')  return `Good afternoon${n}. Stay focused.`;
   return `Good evening${n}. Let's review your day.`;
 }
-function todayCacheKey(){ return `cmos_home_${new Date().toDateString()}_${getTimeOfDay()}`; }
+
+function renderHomeGreeting(){
+  const name = getUserName();
+  const tod = getTimeOfDay();
+  const n = name ? `, ${name}` : '';
+  const date = new Date().toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'});
+  const line1 = {
+    morning: `Good morning${n}.`,
+    midday:  `Good afternoon${n}.`,
+    evening: `Good evening${n}.`
+  }[tod];
+  const line2 = tod==='morning' ? `Today is ${date}. Set your direction.` : tod==='midday' ? 'Stay focused.' : "Let's review your day.";
+  document.getElementById('home-greeting-name').textContent = line1;
+  document.getElementById('home-greeting-line2').textContent = line2;
+  // context signal
+  const sigEl = document.getElementById('context-signal-el');
+  sigEl.textContent = '';
+  if(getApiKey()) getContextSignal().then(sig => { if(sig) sigEl.textContent = sig; });
+}
 
 async function loadHomeContent(){
   const tod = getTimeOfDay();
@@ -812,13 +880,12 @@ async function loadHomeContent(){
   const badge = document.getElementById('time-badge');
   badge.textContent = {morning:'Morning',midday:'Midday',evening:'Evening'}[tod];
   badge.className = `time-badge ${tod}`;
-  const el = document.getElementById('day-intro');
-  el.textContent = getGreeting();
-  if(getApiKey()) getContextSignal().then(sig => { if(sig) el.textContent = sig; });
+  renderHomeGreeting();
   document.getElementById('home-ai-status').classList.remove('hidden');
   document.getElementById('home-error').classList.add('hidden');
   document.getElementById('home-content').classList.add('hidden');
-  selectedAction=null; document.getElementById('home-complete').disabled=true;
+  selectedAction=null;
+  document.getElementById('home-complete').disabled=true;
 
   const cached = LS.get(todayCacheKey());
   if(cached && (Date.now()-cached.ts)<CACHE_TTL){ renderHomeContent(cached.data,cached.theme); return; }
@@ -841,12 +908,17 @@ function renderHomeContent(data,theme){
   document.getElementById('home-quote').textContent = data.original||'';
   document.getElementById('home-translation').textContent = data.translation||'';
   document.getElementById('home-application').textContent = data.application||'';
+
+  // AI-suggested tasks
   const actions = Array.isArray(data.actions)?data.actions:[];
-  document.getElementById('home-actions').innerHTML = actions.map(a=>`<div class="action-chip" onclick="selectAction(this,'${esc(a)}')">${a}</div>`).join('');
-  document.getElementById('home-qa').innerHTML = actions.map(a=>`<button class="qa-chip" onclick="selectQA(this,'home-qa','home-lock','${esc(a)}')" data-v="${esc(a)}">${a}</button>`).join('');
-  document.getElementById('home-lock').oninput = checkHomeComplete;
+  if(actions.length >= 1) document.getElementById('task-1').value = actions[0]||'';
+  if(actions.length >= 2) document.getElementById('task-2').value = actions[1]||'';
+  if(actions.length >= 3) document.getElementById('task-3').value = actions[2]||'';
+  checkHomeComplete();
+
   document.getElementById('home-content').classList.remove('hidden');
-  renderThemeBar(theme); updateSettingsDisplay();
+  renderThemeBar(theme);
+  updateSettingsDisplay();
 }
 
 function renderThemeBar(current){
@@ -861,45 +933,86 @@ function selectAction(el,value){
   document.querySelectorAll('#home-actions .action-chip').forEach(c=>c.classList.remove('selected'));
   el.classList.add('selected'); selectedAction=value; checkHomeComplete();
 }
-function selectQA(el,groupId,targetId,value){
-  document.getElementById(groupId).querySelectorAll('.qa-chip').forEach(c=>c.classList.remove('sel'));
-  el.classList.add('sel'); document.getElementById(targetId).value=value;
-  if(targetId==='home-lock') checkHomeComplete();
-}
+
 function checkHomeComplete(){
-  document.getElementById('home-complete').disabled = !(selectedAction && document.getElementById('home-lock').value.trim().length>2);
+  const t1 = document.getElementById('task-1').value.trim();
+  document.getElementById('home-complete').disabled = !(selectedAction && t1.length>1);
 }
+
 function completeSession(){
-  const lock = document.getElementById('home-lock').value.trim();
+  const tasks = [
+    document.getElementById('task-1').value.trim(),
+    document.getElementById('task-2').value.trim(),
+    document.getElementById('task-3').value.trim(),
+  ].filter(Boolean);
   const tod = getTimeOfDay();
-  logSession({type:'home',tod,action:lock||selectedAction,completed:true});
+  const action = tasks.join(' · ');
+  logSession({type:'home',tod,action,completed:true});
   document.getElementById('streak-num').textContent = parseInt(document.getElementById('streak-num').textContent)+1;
-  showModal('🏛','Session Complete','You chose clarity over noise. The Stoic acts in this moment — not the next.',lock||selectedAction);
+  showModal('🏛','Session Complete','You chose clarity over noise. The Stoic acts in this moment — not the next.',tasks[0]||selectedAction);
+}
+
+function homeFeedbackYes(btn){
+  btn.textContent='👍 Thanks'; btn.style.color='var(--green)'; btn.style.borderColor='var(--green)';
+  document.getElementById('fb-home-confirm').textContent='Good. Stay consistent.';
+  document.getElementById('fb-home-confirm').classList.remove('hidden');
+}
+
+async function homeFeedbackNo(btn){
+  btn.textContent='Retrying…'; btn.disabled=true;
+  // Regenerate with different tone
+  try {
+    const theme = pickNextTheme();
+    const tod=getTimeOfDay();
+    const timeContext = {morning:'morning reflection',midday:'midday recalibration',evening:'evening review'}[tod];
+    const data = await callAI(STOIC_SYSTEM, `Generate a DIFFERENT Stoic passage for ${timeContext}. Theme: ${theme}. Make it more direct and challenging than usual.`);
+    LS.set(todayCacheKey(),{data,theme,ts:Date.now()});
+    renderHomeContent(data,theme);
+    btn.textContent='👎 No'; btn.disabled=false;
+    document.getElementById('fb-home-confirm').textContent='Fresh perspective loaded.';
+    document.getElementById('fb-home-confirm').classList.remove('hidden');
+  } catch(e){
+    btn.textContent='👎 No'; btn.disabled=false;
+  }
 }
 
 // ══════════════════════════════════════════════════════════════
-// BEHAVIOR ENGINE
+// BEHAVIOR ENGINE — STRUGGLE
 // ══════════════════════════════════════════════════════════════
+function revealStruggleInput(){
+  document.getElementById('struggle-prompt-btn').classList.add('hidden');
+  const inp = document.getElementById('struggle-input');
+  inp.classList.remove('hidden');
+  setTimeout(()=>inp.focus(), 100);
+}
+
 function toggleBrutal(){ brutalMode=!brutalMode; document.getElementById('brutal-switch').classList.toggle('on',brutalMode); }
 function toggleCat(el,cat){
   const was=el.classList.contains('active');
   document.querySelectorAll('.cat-chip').forEach(c=>c.classList.remove('active'));
   if(!was){el.classList.add('active');selectedCat=cat;}else selectedCat=null;
 }
+
 async function runBehaviorEngine(){
-  const inp=document.getElementById('struggle-input'), text=inp.value.trim();
+  const inp=document.getElementById('struggle-input');
+  if(inp.classList.contains('hidden')){ revealStruggleInput(); return; }
+  const text=inp.value.trim();
   if(text.length<10){inp.style.borderColor='var(--red)';setTimeout(()=>inp.style.borderColor='',1500);return;}
+  lastStruggleInput=text;
   document.getElementById('struggle-loading').classList.remove('hidden');
   document.getElementById('struggle-results').classList.add('hidden');
   document.getElementById('struggle-error').classList.add('hidden');
   const tone = brutalMode?'Be very direct and firm. Do not soften. Challenge clearly.':'Be firm but respectful and encouraging.';
-  const category = selectedCat?`User flagged this as: ${selectedCat}.`:'';
+  const category = selectedCat?`Context flagged as: ${selectedCat}.`:'';
   try {
-    const data = await callAI(BEHAVIOR_SYSTEM, `${tone}\n${category}\nUser's current struggle:\n"${text}"${getBehaviorMemory()}`);
+    const data = await callAI(BEHAVIOR_SYSTEM, `${tone}\n${category}\nCurrent struggle:\n"${text}"${getBehaviorMemory()}`);
     document.getElementById('s-pattern').textContent = data.pattern||'';
     document.getElementById('s-insight').textContent = data.insight||'';
     document.getElementById('s-correction').textContent = data.correction||'';
-    document.getElementById('s-action-display').textContent = data.action?`Suggested: ${data.action}`:'';
+    // Action steps
+    const steps = Array.isArray(data.actions)?data.actions:(data.action?[data.action]:[]);
+    document.getElementById('s-steps').innerHTML = steps.map((s,i)=>
+      `<div class="step-row"><div class="step-num">${i+1}</div><div class="step-text">${s}</div></div>`).join('');
     document.getElementById('s-lock').value = data.action||'';
     document.getElementById('struggle-loading').classList.add('hidden');
     document.getElementById('struggle-results').classList.remove('hidden');
@@ -911,6 +1024,7 @@ async function runBehaviorEngine(){
     document.getElementById('struggle-error').classList.remove('hidden');
   }
 }
+
 function lockStruggle(){
   const lock=document.getElementById('s-lock').value.trim();
   if(!lock){document.getElementById('s-lock').focus();return;}
@@ -918,32 +1032,53 @@ function lockStruggle(){
   showModal('⚡','Locked In','The Stoic acts. Everything else is commentary.',lock);
 }
 
+function struggleFeedbackYes(btn){
+  btn.textContent='👍 Thanks'; btn.style.color='var(--green)'; btn.style.borderColor='var(--green)';
+  document.getElementById('fb-struggle-confirm').textContent='Good. Execute on it.';
+  document.getElementById('fb-struggle-confirm').classList.remove('hidden');
+}
+
+async function struggleFeedbackNo(btn){
+  btn.textContent='Retrying…'; btn.disabled=true;
+  const text = lastStruggleInput || document.getElementById('struggle-input').value.trim();
+  if(!text){ btn.textContent='👎 No'; btn.disabled=false; return; }
+  try {
+    const data = await callAI(BEHAVIOR_SYSTEM, `Generate a DIFFERENT, more direct alternative approach.\nStruggle: "${text}"${getBehaviorMemory()}`);
+    document.getElementById('s-pattern').textContent = data.pattern||'';
+    document.getElementById('s-insight').textContent = data.insight||'';
+    document.getElementById('s-correction').textContent = data.correction||'';
+    const steps = Array.isArray(data.actions)?data.actions:(data.action?[data.action]:[]);
+    document.getElementById('s-steps').innerHTML = steps.map((s,i)=>
+      `<div class="step-row"><div class="step-num">${i+1}</div><div class="step-text">${s}</div></div>`).join('');
+    document.getElementById('s-lock').value = data.action||'';
+    btn.textContent='👎 No'; btn.disabled=false;
+    document.getElementById('fb-struggle-confirm').textContent='Alternative approach loaded.';
+    document.getElementById('fb-struggle-confirm').classList.remove('hidden');
+  } catch(e){
+    btn.textContent='👎 No'; btn.disabled=false;
+  }
+}
+
 // ══════════════════════════════════════════════════════════════
 // EVENING ENGINE
 // ══════════════════════════════════════════════════════════════
 function initEvening(){
-  document.getElementById('eve-greeting').textContent = getGreeting();
+  const name = getUserName();
+  const n = name?`, ${name}`:'';
+  document.getElementById('eve-greeting').textContent = `Good evening${n}. Let's review your day.`;
   document.getElementById('eve-date-sub').textContent = formatDate();
-
-  // Reset to phase 1
   resetEveningPhase();
 
-  // Build committed items from today's sessions
   const today = getTodaySessions();
   eveCommittedItems = [];
   eveAccountability = {};
 
-  // Morning sessions
-  const morning = today.filter(s=>s.type==='home'&&s.tod==='morning'&&s.action);
-  morning.forEach(s=>eveCommittedItems.push({id:`m_${s.ts}`,tag:'morning',text:s.action}));
-
-  // Midday sessions
-  const midday = today.filter(s=>s.type==='home'&&s.tod==='midday'&&s.action);
-  midday.forEach(s=>eveCommittedItems.push({id:`d_${s.ts}`,tag:'midday',text:s.action}));
-
-  // Struggle lock-ins
-  const struggles = today.filter(s=>s.type==='struggle'&&s.completed&&s.action);
-  struggles.forEach(s=>eveCommittedItems.push({id:`s_${s.ts}`,tag:'struggle',text:s.action}));
+  today.filter(s=>s.type==='home'&&s.tod==='morning'&&s.action)
+    .forEach(s=>eveCommittedItems.push({id:`m_${s.ts}`,tag:'morning',text:s.action}));
+  today.filter(s=>s.type==='home'&&s.tod==='midday'&&s.action)
+    .forEach(s=>eveCommittedItems.push({id:`d_${s.ts}`,tag:'midday',text:s.action}));
+  today.filter(s=>s.type==='struggle'&&s.completed&&s.action)
+    .forEach(s=>eveCommittedItems.push({id:`s_${s.ts}`,tag:'struggle',text:s.action}));
 
   renderCommittedList();
   updateEveReviewBtn();
@@ -957,29 +1092,22 @@ function renderCommittedList(){
     return;
   }
   document.getElementById('eve-day-score').classList.remove('hidden');
-
   container.innerHTML = eveCommittedItems.map(item => {
     const sel = eveAccountability[item.id];
     return `<div class="committed-item" id="ci-${item.id}">
-      <div class="committed-item-header">
-        <span class="committed-tag ${item.tag}">${item.tag}</span>
-        <span class="committed-text">${item.text}</span>
-      </div>
+      <div class="committed-item-header"><span class="committed-tag ${item.tag}">${item.tag}</span><span class="committed-text">${item.text}</span></div>
       <div class="acct-selector">
         <button class="acct-btn done ${sel==='done'?'sel':''}"    onclick="setAcct('${item.id}','done')">Done</button>
-        <button class="acct-btn partial ${sel==='partial'?'sel':''}" onclick="setAcct('${item.id}','partial')">Partially Done</button>
+        <button class="acct-btn partial ${sel==='partial'?'sel':''}" onclick="setAcct('${item.id}','partial')">Partially</button>
         <button class="acct-btn notdone ${sel==='notdone'?'sel':''}" onclick="setAcct('${item.id}','notdone')">Not Done</button>
-        <button class="acct-btn still ${sel==='still'?'sel':''}"   onclick="setAcct('${item.id}','still')">Still Struggling</button>
-      </div>
-    </div>`;
+        <button class="acct-btn still ${sel==='still'?'sel':''}"   onclick="setAcct('${item.id}','still')">Struggling</button>
+      </div></div>`;
   }).join('');
-
   updateDayScore();
 }
 
-function setAcct(id, value){
-  eveAccountability[id] = value;
-  // re-render just the buttons in that item
+function setAcct(id,value){
+  eveAccountability[id]=value;
   document.querySelectorAll(`#ci-${id} .acct-btn`).forEach(btn=>{
     btn.classList.remove('sel');
     if(btn.classList.contains(value)) btn.classList.add('sel');
@@ -989,103 +1117,66 @@ function setAcct(id, value){
 }
 
 function updateDayScore(){
-  if(!eveCommittedItems.length) return;
-  const rated = Object.keys(eveAccountability).length;
-  const total = eveCommittedItems.length;
-  const scoreMap = {done:100, partial:50, notdone:0, still:10};
-  let sum = 0, count = 0;
-  eveCommittedItems.forEach(item=>{
-    const r = eveAccountability[item.id];
-    if(r){ sum += scoreMap[r]||0; count++; }
-  });
-  const pct = count>0 ? Math.round(sum/count) : 0;
-  document.getElementById('eve-score-num').textContent = `${pct}%`;
-  document.getElementById('eve-score-fill').style.width = `${pct}%`;
-  const labels = {0:'Needs Work',1:50?'Partial Progress':'',100:'Excellent'};
-  let lbl = pct>=80?'Strong Day':pct>=50?'Partial Progress':pct>0?'Needs Work':'Rate Your Day';
-  document.getElementById('eve-score-label').textContent = lbl;
-  document.getElementById('eve-score-sub').textContent = `${rated} of ${total} rated`;
+  const total=eveCommittedItems.length; if(!total) return;
+  const scoreMap={done:100,partial:50,notdone:0,still:10};
+  let sum=0,count=0;
+  eveCommittedItems.forEach(item=>{const r=eveAccountability[item.id];if(r){sum+=scoreMap[r]||0;count++;}});
+  const pct=count>0?Math.round(sum/count):0;
+  document.getElementById('eve-score-num').textContent=`${pct}%`;
+  document.getElementById('eve-score-fill').style.width=`${pct}%`;
+  document.getElementById('eve-score-label').textContent=pct>=80?'Strong Day':pct>=50?'Partial Progress':pct>0?'Needs Work':'Rate Your Day';
+  document.getElementById('eve-score-sub').textContent=`${count} of ${total} rated`;
 }
 
 function updateEveReviewBtn(){
-  const allRated = eveCommittedItems.length>0 && eveCommittedItems.every(item=>eveAccountability[item.id]);
-  document.getElementById('eve-review-btn').disabled = !allRated;
+  document.getElementById('eve-review-btn').disabled = !(eveCommittedItems.length>0 && eveCommittedItems.every(item=>eveAccountability[item.id]));
 }
 
 async function runEveningEngine(){
   document.getElementById('eve-loading').classList.remove('hidden');
   document.getElementById('eve-error').classList.add('hidden');
-  document.getElementById('eve-review-btn').disabled = true;
-
-  // Build context string
+  document.getElementById('eve-review-btn').disabled=true;
   const acctLines = eveCommittedItems.map(item=>{
-    const r = eveAccountability[item.id]||'not rated';
-    const rLabel = {done:'Done',partial:'Partially Done',notdone:'Not Done',still:'Still Struggling'}[r]||r;
+    const r=eveAccountability[item.id]||'not rated';
+    const rLabel={done:'Done',partial:'Partially Done',notdone:'Not Done',still:'Still Struggling'}[r]||r;
     return `- [${item.tag}] "${item.text}" → ${rLabel}`;
   }).join('\n');
-
-  const doneCount = eveCommittedItems.filter(i=>eveAccountability[i.id]==='done').length;
-  const totalCount = eveCommittedItems.length;
+  const doneCount=eveCommittedItems.filter(i=>eveAccountability[i.id]==='done').length;
+  const totalCount=eveCommittedItems.length;
   const scoreMap={done:100,partial:50,notdone:0,still:10};
-  let sum=0; eveCommittedItems.forEach(i=>{const r=eveAccountability[i.id]; if(r)sum+=scoreMap[r]||0;});
-  const pct = totalCount>0?Math.round(sum/totalCount):0;
-
-  const userMsg = `Today's committed actions and accountability:\n${acctLines}\n\nOverall completion: ${doneCount}/${totalCount} fully done (${pct}% score).${getBehaviorMemory()}`;
-
+  let sum=0; eveCommittedItems.forEach(i=>{const r=eveAccountability[i.id];if(r)sum+=scoreMap[r]||0;});
+  const pct=totalCount>0?Math.round(sum/totalCount):0;
+  const userMsg=`Today's committed actions and accountability:\n${acctLines}\n\nOverall: ${doneCount}/${totalCount} fully done (${pct}% score).${getBehaviorMemory()}`;
   try {
     const data = await callAI(EVENING_SYSTEM, userMsg);
-
-    document.getElementById('eve-r-summary').textContent      = data.summary||'';
-    document.getElementById('eve-r-pattern').textContent      = data.pattern||'';
-    document.getElementById('eve-r-accountability').textContent = data.accountability||'';
-    document.getElementById('eve-r-adjustment').textContent   = data.adjustment||'';
-    document.getElementById('eve-r-tomorrow').textContent     = data.tomorrow||'';
-
-    // Pre-fill tomorrow input from AI suggestion
-    const tomorrowInput = document.getElementById('eve-tomorrow-input');
-    if(data.tomorrow && !tomorrowInput.value) tomorrowInput.value = data.tomorrow;
-
+    document.getElementById('eve-r-summary').textContent=data.summary||'';
+    document.getElementById('eve-r-pattern').textContent=data.pattern||'';
+    document.getElementById('eve-r-accountability').textContent=data.accountability||'';
+    document.getElementById('eve-r-adjustment').textContent=data.adjustment||'';
+    document.getElementById('eve-r-tomorrow').textContent=data.tomorrow||'';
+    const ti=document.getElementById('eve-tomorrow-input');
+    if(data.tomorrow&&!ti.value) ti.value=data.tomorrow;
     document.getElementById('eve-loading').classList.add('hidden');
     document.getElementById('eve-phase-input').classList.add('hidden');
     document.getElementById('eve-phase-results').classList.remove('hidden');
     document.getElementById('eve-scroll').scrollTo({top:0,behavior:'smooth'});
-
-    // Save evening result
-    logSession({
-      type:'evening',
-      tod:'evening',
-      acct:eveAccountability,
-      score:pct,
-      pattern:data.pattern,
-      adjustment:data.adjustment,
-      tomorrowSuggestion:data.tomorrow,
-      completed:true
-    });
-
+    logSession({type:'evening',tod:'evening',score:pct,pattern:data.pattern,adjustment:data.adjustment,tomorrowSuggestion:data.tomorrow,completed:true});
   } catch(e){
     document.getElementById('eve-loading').classList.add('hidden');
-    document.getElementById('eve-error-msg').textContent = e.message;
+    document.getElementById('eve-error-msg').textContent=e.message;
     document.getElementById('eve-error').classList.remove('hidden');
-    document.getElementById('eve-review-btn').disabled = false;
+    document.getElementById('eve-review-btn').disabled=false;
   }
 }
 
 function lockTomorrow(){
-  const input = document.getElementById('eve-tomorrow-input').value.trim();
-  if(!input){ document.getElementById('eve-tomorrow-input').focus(); return; }
-
-  // Update the last evening session with the locked tomorrow action
-  const sessions = LS.get('cmos_sessions')||[];
-  const lastEve = [...sessions].reverse().find(s=>s.type==='evening');
-  if(lastEve){ lastEve.tomorrowAction=input; LS.set('cmos_sessions',sessions); }
-
-  // Also store as tomorrow intent
-  LS.set('cmos_tomorrow', {action:input, date:new Date().toDateString()});
-
-  showModal('🌙','Day Complete',
-    'Your review is locked. Rest. Tomorrow you begin with clarity.',
-    input
-  );
+  const input=document.getElementById('eve-tomorrow-input').value.trim();
+  if(!input){document.getElementById('eve-tomorrow-input').focus();return;}
+  const sessions=LS.get('cmos_sessions')||[];
+  const lastEve=[...sessions].reverse().find(s=>s.type==='evening');
+  if(lastEve){lastEve.tomorrowAction=input;LS.set('cmos_sessions',sessions);}
+  LS.set('cmos_tomorrow',{action:input,date:new Date().toDateString()});
+  showModal('🌙','Day Complete','Your review is locked. Rest. Tomorrow you begin with clarity.',input);
 }
 
 function resetEveningPhase(){
@@ -1093,8 +1184,8 @@ function resetEveningPhase(){
   document.getElementById('eve-phase-results').classList.add('hidden');
   document.getElementById('eve-loading').classList.add('hidden');
   document.getElementById('eve-error').classList.add('hidden');
-  document.getElementById('eve-review-btn').disabled = true;
-  eveAccountability = {};
+  document.getElementById('eve-review-btn').disabled=true;
+  eveAccountability={};
 }
 
 // ══════════════════════════════════════════════════════════════
@@ -1115,9 +1206,31 @@ async function selectState(el,state){
   el.classList.add('active');
   setTimeout(()=>guidedNext(2),350);
   currentGuidedData=null;
-  const stateMap={stress:'excessive stress and anxiety',anger:'anger and loss of control',fear:'fear and avoidance',confusion:'confusion and lack of clarity'};
+
+  const positiveStates=['grateful','calm'];
+  const isPositive=positiveStates.includes(state);
+
+  const stateMap={
+    stress:'excessive stress and anxiety',anger:'anger and loss of control',
+    fear:'fear and avoidance',confusion:'confusion and lack of clarity',
+    grateful:'gratitude and thankfulness',calm:'calm and peaceful presence'
+  };
+
   try {
-    const data = await callAI(STOIC_SYSTEM, `The user is experiencing: ${stateMap[state]||state}. Provide a Stoic insight from Meditations for immediate calming wisdom and a practical reframe.`);
+    let prompt;
+    if(isPositive){
+      // For positive states — inspirational reflection, not stoic problem-solving
+      const memory=getBehaviorMemory();
+      prompt=`Generate a short inspirational reflection for someone feeling ${stateMap[state]||state}.
+Context (recent behavior): ${memory||'no prior data'}
+Rules: 1-2 lines only. Stoic tone. Calm, grounded, relevant. No fluff.
+Respond as JSON: {"original":"reflection sentence in classical tone","translation":"plain meaning","application":"how to sustain or deepen this state"}`;
+    } else {
+      prompt=`You are experiencing: ${stateMap[state]||state}. Provide a Stoic insight from Meditations for immediate calming wisdom and a practical reframe.`;
+    }
+    const data = isPositive
+      ? await callAI(STOIC_SYSTEM, prompt)
+      : await callAI(STOIC_SYSTEM, prompt);
     currentGuidedData=data;
   } catch(e){
     currentGuidedData={original:'"The obstacle to action advances action. What stands in the way becomes the way."',translation:'What you resist is teaching you.',application:'Sit with this state rather than fleeing it. It is information, not a verdict.'};
@@ -1142,7 +1255,7 @@ function renderGuidedInsight(){
   } else {
     document.getElementById('g-insight-loading').classList.remove('hidden');
     document.getElementById('g-insight-content').classList.add('hidden');
-    const wait=setInterval(()=>{ if(currentGuidedData){clearInterval(wait);renderGuidedInsight();} },500);
+    const wait=setInterval(()=>{if(currentGuidedData){clearInterval(wait);renderGuidedInsight();}},500);
   }
 }
 
@@ -1214,7 +1327,7 @@ function playChime(){
     });
   }catch(e){}
 }
-function triggerVibrate(){ if(!vibrateOn)return; try{if(navigator.vibrate)navigator.vibrate([200,100,200]);}catch(e){} }
+function triggerVibrate(){ if(!vibrateOn)return;try{if(navigator.vibrate)navigator.vibrate([200,100,200]);}catch(e){} }
 function setSCStyle(id,on){
   const el=document.getElementById(id);if(!el)return;
   el.style.background=on?'var(--green)':'var(--border)';
@@ -1222,7 +1335,7 @@ function setSCStyle(id,on){
   if(!s){s=document.createElement('style');s.id='_s'+id;document.head.appendChild(s);}
   s.textContent=`#${id}::after{transform:translateX(${on?18:0}px)!important}`;
 }
-function toggleSC(type){ if(type==='sound'){soundOn=!soundOn;setSCStyle('sw-sound',soundOn);}else{vibrateOn=!vibrateOn;setSCStyle('sw-vibrate',vibrateOn);} }
+function toggleSC(type){if(type==='sound'){soundOn=!soundOn;setSCStyle('sw-sound',soundOn);}else{vibrateOn=!vibrateOn;setSCStyle('sw-vibrate',vibrateOn);}}
 function setTimerLen(min,el){
   timerLen=min;timerSeconds=min*60;
   document.querySelectorAll('.timer-len').forEach(b=>b.classList.remove('active'));
@@ -1242,12 +1355,12 @@ function startTimer(){
       clearInterval(timerInterval);timerInterval=null;
       playChime();triggerVibrate();
       logSession({type:'meditate',mode:'silent',duration:timerLen,completed:true});
-      showModal('🕯','Silence Complete',`${timerLen} minute${timerLen>1?'s':''} of presence. The Stoic mind is a quiet one.`,'"Look within. Within is the fountain of good."');
+      showModal('🕯','Silence Complete',`${timerLen} minute${timerLen>1?'s':''} of presence.`,'"Look within. Within is the fountain of good."');
       timerSeconds=timerLen*60;updateTimerDisplay();
     }
   },1000);
 }
-function stopTimer(){ if(timerInterval){clearInterval(timerInterval);timerInterval=null;}timerSeconds=timerLen*60;updateTimerDisplay(); }
+function stopTimer(){if(timerInterval){clearInterval(timerInterval);timerInterval=null;}timerSeconds=timerLen*60;updateTimerDisplay();}
 
 // ══════════════════════════════════════════════════════════════
 // HISTORY
@@ -1269,33 +1382,24 @@ function initHistory(){
   const completedCount=sessions.filter(s=>s.completed).length;
   const totalCount=sessions.length;
   const pct=totalCount>0?Math.round((completedCount/totalCount)*100):0;
-
-  // Pull latest evening review for pattern
   const lastEve=sessions.find(s=>s.type==='evening');
-
   let html='';
   if(lastEve&&lastEve.pattern) html+=`<div class="pattern-insight"><div class="pi-label">Last Evening Pattern</div><div class="pi-text">${lastEve.pattern}</div></div>`;
   if(topCat&&topCat[1]>1) html+=`<div class="pattern-insight"><div class="pi-label">Recurring Struggle</div><div class="pi-text">Most entries involve <strong style="color:var(--orange)">${catNames[topCat[0]]}</strong> — ${topCat[1]} times logged.</div></div>`;
-  if(totalCount>0) html+=`<div class="pattern-insight"><div class="pi-label">Completion Rate</div><div class="pi-text"><strong style="color:var(--green)">${pct}%</strong> sessions ended with a locked action. ${p.used.length}/${THEMES.length} Stoic themes explored.</div></div>`;
-
-  // Show tomorrow intent if set today
+  if(totalCount>0) html+=`<div class="pattern-insight"><div class="pi-label">Completion Rate</div><div class="pi-text"><strong style="color:var(--green)">${pct}%</strong> of sessions ended with a locked action. ${p.used.length}/${THEMES.length} Stoic themes explored.</div></div>`;
   const tmr=LS.get('cmos_tomorrow');
   if(tmr&&tmr.date===new Date().toDateString()) html+=`<div class="pattern-insight" style="border-color:rgba(139,111,212,.3);background:linear-gradient(135deg,rgba(40,20,80,.4) 0%,var(--bg2) 100%)"><div class="pi-label" style="color:var(--eve-light)">Tomorrow's Intent</div><div class="pi-text" style="color:var(--text)">${tmr.action}</div></div>`;
-
   document.getElementById('history-patterns').innerHTML=html||'<div class="pattern-insight"><div class="pi-label">No patterns yet</div><div class="pi-text">Complete more sessions to surface your behavioral patterns.</div></div>';
-
   const badgeMap={home:'morning',struggle:'struggle',meditate:'meditate',evening:'eve'};
   document.getElementById('history-list').innerHTML=sessions.slice(0,20).map(s=>{
     const d=new Date(s.ts);
     const dateStr=d.toLocaleDateString('en-US',{month:'short',day:'numeric',hour:'numeric',minute:'2-digit'});
     const badge=badgeMap[s.type]||s.type;
-    let action='—';
-    if(s.type==='evening') action=s.tomorrowAction||s.tomorrowSuggestion||`Review complete (${s.score||0}%)`;
-    else action=s.action||s.issue||s.mode||'—';
+    let action=s.type==='evening'?(s.tomorrowAction||s.tomorrowSuggestion||`Review complete (${s.score||0}%)`):(s.action||s.issue||s.mode||'—');
     return `<div class="hist-entry"><div class="hist-meta"><span class="hist-date">${dateStr}</span><span class="hist-badge ${badge}">${s.type}</span></div><div class="hist-action">${String(action).slice(0,80)}</div></div>`;
   }).join('')||'<div style="font-size:13px;color:var(--textd);text-align:center;padding:20px">No sessions yet.</div>';
 }
-function clearHistory(){ if(confirm('Clear all session history?')){LS.del('cmos_sessions');LS.del('cmos_tomorrow');initHistory();} }
+function clearHistory(){if(confirm('Clear all session history?')){LS.del('cmos_sessions');LS.del('cmos_tomorrow');initHistory();}}
 
 // ══════════════════════════════════════════════════════════════
 // SETTINGS
@@ -1310,27 +1414,26 @@ function initSettings(){
   if(nameInp) nameInp.value=getUserName();
   updateSettingsDisplay();
 }
-function setApiStatus(ok){ const el=document.getElementById('api-key-status');el.textContent=ok?'Key saved':'Not set';el.className='api-status '+(ok?'ok':'missing'); }
-function saveApiKey(){ const val=document.getElementById('api-key-input').value.trim();if(!val){setApiStatus(false);return;}localStorage.setItem('cmos_api_key',val);setApiStatus(true); }
-function toggleShowKey(){ const inp=document.getElementById('api-key-input');inp.type=inp.type==='password'?'text':'password'; }
-function saveModel(){ const val=document.getElementById('model-select').value;localStorage.setItem('cmos_model',val);document.getElementById('model-display').textContent=val; }
-function saveName(){ const val=document.getElementById('user-name-input').value.trim();localStorage.setItem('cmos_name',val); }
-function resetThemes(){ LS.del('cmos_themes');updateSettingsDisplay();document.getElementById('theme-bar').innerHTML=THEMES.map(t=>`<div class="theme-pill">${THEME_LABELS[t]}</div>`).join(''); }
-function clearCache(){ const keys=[];for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(k&&k.startsWith('cmos_home_'))keys.push(k);}keys.forEach(k=>localStorage.removeItem(k));alert('Cache cleared.'); }
-function updateSettingsDisplay(){ const p=getThemeProgress();const el=document.getElementById('themes-used-display');if(el)el.textContent=`${p.used.length} / ${THEMES.length}`; }
+function setApiStatus(ok){const el=document.getElementById('api-key-status');el.textContent=ok?'Key saved':'Not set';el.className='api-status '+(ok?'ok':'missing');}
+function saveApiKey(){const val=document.getElementById('api-key-input').value.trim();if(!val){setApiStatus(false);return;}localStorage.setItem('cmos_api_key',val);setApiStatus(true);}
+function toggleShowKey(){const inp=document.getElementById('api-key-input');inp.type=inp.type==='password'?'text':'password';}
+function saveModel(){const val=document.getElementById('model-select').value;localStorage.setItem('cmos_model',val);document.getElementById('model-display').textContent=val;}
+function saveName(){const val=document.getElementById('user-name-input').value.trim();localStorage.setItem('cmos_name',val);}
+function resetThemes(){LS.del('cmos_themes');updateSettingsDisplay();document.getElementById('theme-bar').innerHTML=THEMES.map(t=>`<div class="theme-pill">${THEME_LABELS[t]}</div>`).join('');}
+function clearCache(){const keys=[];for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(k&&k.startsWith('cmos_home_'))keys.push(k);}keys.forEach(k=>localStorage.removeItem(k));alert('Cache cleared.');}
+function updateSettingsDisplay(){const p=getThemeProgress();const el=document.getElementById('themes-used-display');if(el)el.textContent=`${p.used.length} / ${THEMES.length}`;}
 
 // ══════════════════════════════════════════════════════════════
 // NAV + MODAL
 // ══════════════════════════════════════════════════════════════
 function goTo(screen){
+  document.querySelectorAll('.nav-btn').forEach(btn=>btn.classList.remove('active'));
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
-  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
-  document.getElementById(`screen-${screen}`).classList.add('active');
-  document.getElementById(`nav-${screen}`).classList.add('active');
+  document.getElementById('screen-'+screen).classList.add('active');
+  document.getElementById('nav-'+screen).classList.add('active');
   if(screen==='history') initHistory();
   if(screen==='settings') initSettings();
   if(screen==='evening') initEvening();
-  if(screen==='struggle') setTimeout(()=>document.getElementById('struggle-input').focus(),200);
 }
 
 function showModal(icon,title,sub,action){
@@ -1340,13 +1443,12 @@ function showModal(icon,title,sub,action){
   document.getElementById('modal-action').textContent=action;
   document.getElementById('success-modal').classList.add('open');
 }
-function closeModal(){ document.getElementById('success-modal').classList.remove('open'); }
+function closeModal(){document.getElementById('success-modal').classList.remove('open');}
 function doneModal(){
   closeModal();
   selectedAction=null;
   document.querySelectorAll('.action-chip').forEach(c=>c.classList.remove('selected'));
-  document.querySelectorAll('.qa-chip').forEach(c=>c.classList.remove('sel'));
-  ['home-lock','s-lock','g-calm-input','journal-input'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  ['task-1','task-2','task-3','s-lock','g-calm-input','journal-input'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
   document.getElementById('home-complete').disabled=true;
   document.getElementById('struggle-results').classList.add('hidden');
   document.getElementById('journal-result').classList.add('hidden');
@@ -1356,13 +1458,97 @@ function doneModal(){
 // ══════════════════════════════════════════════════════════════
 // UTIL
 // ══════════════════════════════════════════════════════════════
-function esc(s){ return String(s).replace(/'/g,"&#39;").replace(/"/g,'&quot;'); }
-function fbTap(btn,txt){ btn.textContent=txt;btn.style.color='var(--green)';btn.style.borderColor='var(--green)'; }
+function esc(s){return String(s).replace(/'/g,"&#39;").replace(/"/g,'&quot;');}
+function fbTap(btn,txt){btn.textContent=txt;btn.style.color='var(--green)';btn.style.borderColor='var(--green)';}
+
+function runOnboarding(){
+  alert(
+`Welcome to ClearMindOS
+
+1. Start your day on Home
+   Set your posture and 3 tasks for the day.
+
+2. Use Struggle when stuck
+   The AI detects your pattern and gives you a correction + action steps.
+
+3. Review your day honestly
+   Rate your commitments. Lock tomorrow's focus.
+
+4. Use Meditate to reset
+   Guided reset, silent timer, or journal reflection.
+
+Stay consistent. That's where change happens.`
+  );
+  localStorage.setItem('cmos_seen_onboarding','true');
+}
+
+function reloadSample(){
+  LS.del('cmos_seeded');LS.del('cmos_sessions');LS.del('cmos_streak');LS.del('cmos_themes');LS.del('cmos_tomorrow');
+  localStorage.removeItem('cmos_name');
+  for(let i=localStorage.length-1;i>=0;i--){const k=localStorage.key(i);if(k&&k.startsWith('cmos_signal_'))localStorage.removeItem(k);}
+  seedSampleData();
+  document.getElementById('streak-num').textContent=LS.get('cmos_streak')||0;
+  if(document.getElementById('user-name-input')) document.getElementById('user-name-input').value=getUserName();
+  alert('Sample data reloaded.');
+}
+function wipeSample(){
+  if(!confirm('Wipe ALL app data?')) return;
+  const keep=localStorage.getItem('cmos_api_key'),keepM=localStorage.getItem('cmos_model');
+  localStorage.clear();
+  if(keep) localStorage.setItem('cmos_api_key',keep);
+  if(keepM) localStorage.setItem('cmos_model',keepM);
+  document.getElementById('streak-num').textContent=0;
+  if(document.getElementById('user-name-input')) document.getElementById('user-name-input').value='';
+  alert('All data wiped. API key preserved.');
+}
+
+// ══════════════════════════════════════════════════════════════
+// SAMPLE DATA
+// ══════════════════════════════════════════════════════════════
+function seedSampleData(){
+  if(LS.get('cmos_seeded')) return;
+  const now=Date.now(), DAY=86400000;
+  if(!getUserName()) localStorage.setItem('cmos_name','Alex');
+  const sessions=[
+    {type:'home',tod:'morning',action:'Start with the client proposal before checking email',completed:true,ts:now-7*DAY+7*3600000},
+    {type:'home',tod:'evening',action:'Review what went wrong in the afternoon meeting',completed:true,ts:now-7*DAY+21*3600000},
+    {type:'home',tod:'morning',action:'Finish the first draft of the pitch deck by noon',completed:true,ts:now-6*DAY+8*3600000},
+    {type:'struggle',issue:'I keep getting distracted by notifications when trying to deep work',action:'Put phone in another room for 2 hours',completed:true,ts:now-6*DAY+14*3600000},
+    {type:'home',tod:'evening',action:'Accept that the pitch deck draft is good enough',completed:false,ts:now-6*DAY+20*3600000},
+    {type:'home',tod:'morning',action:'Block calendar for 3 hours of uninterrupted writing',completed:true,ts:now-5*DAY+7*3600000},
+    {type:'struggle',issue:'Procrastinating on the difficult conversation with my manager',action:'Send the message before end of day',completed:false,ts:now-5*DAY+15*3600000},
+    {type:'meditate',mode:'guided',action:'Release the anxiety about the outcome',completed:true,ts:now-5*DAY+18*3600000},
+    {type:'home',tod:'morning',action:'Respond to all outstanding emails before 10am',completed:true,ts:now-4*DAY+8*3600000},
+    {type:'struggle',issue:'Feeling overwhelmed with too many competing priorities',action:'Write down the 3 actual priorities and ignore the rest',completed:true,ts:now-4*DAY+11*3600000},
+    {type:'home',tod:'midday',action:'Cut two tasks from today that are not truly essential',completed:true,ts:now-4*DAY+13*3600000},
+    {type:'evening',tod:'evening',score:78,pattern:'You completed what you started but avoided the uncomfortable task again.',adjustment:'Do the hard thing before the easy thing.',tomorrowAction:'Have the difficult conversation with your manager first thing.',completed:true,ts:now-4*DAY+21*3600000},
+    {type:'home',tod:'morning',action:'Have the difficult conversation with manager before 11am',completed:true,ts:now-3*DAY+7*3600000},
+    {type:'struggle',issue:'I keep procrastinating on tasks I find boring even when they are important',action:'Set a 20-minute timer and just start — do not aim to finish',completed:true,ts:now-3*DAY+16*3600000},
+    {type:'meditate',mode:'silent',duration:5,completed:true,ts:now-3*DAY+19*3600000},
+    {type:'home',tod:'morning',action:'Protect the first hour — no Slack, no email, just the work',completed:true,ts:now-2*DAY+6*3600000},
+    {type:'home',tod:'midday',action:'Finish what I started this morning before starting anything new',completed:false,ts:now-2*DAY+12*3600000},
+    {type:'struggle',issue:'Distracted by social media and news during work hours again',action:'Use app blocker from 9am to 1pm starting tomorrow',completed:true,ts:now-2*DAY+17*3600000},
+    {type:'evening',tod:'evening',score:60,pattern:'Strong start but lost momentum by midday. Distraction is a recurring issue in the afternoon.',adjustment:'Protect midday the same way you protect morning.',tomorrowAction:'Set a hard stop on all social apps until 2pm.',completed:true,ts:now-2*DAY+22*3600000},
+    {type:'home',tod:'morning',action:'Write the weekly report before opening any messages',completed:true,ts:now-1*DAY+7*3600000},
+    {type:'struggle',issue:'Fear of negative feedback on the work I submitted last week',action:'Name the fear precisely, then ask: what is the realistic worst case?',completed:true,ts:now-1*DAY+10*3600000},
+    {type:'home',tod:'midday',action:'Send the weekly report even if it feels incomplete',completed:true,ts:now-1*DAY+13*3600000},
+    {type:'meditate',mode:'reflect',completed:true,ts:now-1*DAY+19*3600000},
+    {type:'evening',tod:'evening',score:100,pattern:'You executed consistently today. The fear-naming exercise worked — you stopped avoiding and acted.',adjustment:'Maintain this standard. High completion days are available to you more often than you use them.',tomorrowAction:'Begin tomorrow with the single most important task — no warm-up.',completed:true,ts:now-1*DAY+21*3600000},
+    {type:'home',tod:'morning',action:'Begin with the most important task before checking anything',completed:true,ts:now-2*3600000},
+    {type:'struggle',issue:'Feeling scattered and unable to decide what to work on next',action:'Write the 3 things that actually matter today and start the first one',completed:true,ts:now-1*3600000},
+  ];
+  LS.set('cmos_sessions',sessions);
+  LS.set('cmos_streak',7);
+  LS.set('cmos_themes',{used:['control','discipline','time'],current:'discipline'});
+  LS.set('cmos_tomorrow',{action:'Begin tomorrow with the single most important task — no warm-up.',date:new Date().toDateString()});
+  LS.set('cmos_seeded',true);
+}
 
 // ══════════════════════════════════════════════════════════════
 // BOOT
 // ══════════════════════════════════════════════════════════════
 (function boot(){
+  seedSampleData();
   document.getElementById('streak-num').textContent=LS.get('cmos_streak')||0;
   setSCStyle('sw-sound',true);
   setSCStyle('sw-vibrate',true);
@@ -1379,10 +1565,14 @@ function fbTap(btn,txt){ btn.textContent=txt;btn.style.color='var(--green)';btn.
     const badge=document.getElementById('time-badge');
     badge.textContent={morning:'Morning',midday:'Midday',evening:'Evening'}[tod];
     badge.className=`time-badge ${tod}`;
-    document.getElementById('day-intro').textContent = getGreeting();
+    renderHomeGreeting();
     renderThemeBar(null);
   } else {
     loadHomeContent();
+  }
+
+  if(!localStorage.getItem('cmos_seen_onboarding')){
+    setTimeout(runOnboarding,600);
   }
 })();
 </script>
