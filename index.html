@@ -1,0 +1,1390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="theme-color" content="#08090D"/>
+<title>ClearMind OS</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+:root{
+  --bg:#08090D;--bg1:#0E1017;--bg2:#13161E;--bg3:#191D27;
+  --border:#252A38;--borderlt:#333A50;
+  --text:#F0F2F8;--textm:#9BA3BC;--textd:#4A5068;
+  --blue:#6AABFF;--green:#3ECFA0;--orange:#FF8C42;
+  --purple:#C4A0FF;--gold:#D4B356;--red:#F25F5C;
+  --eve:#8B6FD4;--eve-light:#C4A0FF;
+}
+html,body{height:100%;width:100%;background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;font-size:15px;line-height:1.6;overflow:hidden}
+#app{display:flex;flex-direction:column;height:100dvh;width:100%;max-width:430px;margin:0 auto;position:relative;overflow:hidden}
+.screen{display:none;flex-direction:column;flex:1;overflow:hidden}
+.screen.active{display:flex}
+.scroll-body{flex:1;overflow-y:auto;overflow-x:hidden;padding:14px 14px 28px;-webkit-overflow-scrolling:touch}
+.scroll-body::-webkit-scrollbar{display:none}
+
+/* TOPBAR */
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:13px 16px 10px;border-bottom:1px solid var(--border);background:var(--bg);flex-shrink:0}
+.topbar-title{font-family:'Syne',sans-serif;font-weight:800;font-size:13px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold)}
+.topbar-date{font-size:12px;color:var(--textm);font-weight:300;margin-top:1px}
+.time-badge{font-size:11px;font-weight:600;letter-spacing:.1em;padding:4px 11px;border-radius:20px;text-transform:uppercase}
+.time-badge.morning{background:rgba(212,179,86,.15);color:var(--gold);border:1px solid rgba(212,179,86,.3)}
+.time-badge.midday{background:rgba(255,140,66,.15);color:var(--orange);border:1px solid rgba(255,140,66,.3)}
+.time-badge.evening{background:rgba(196,160,255,.15);color:var(--purple);border:1px solid rgba(196,160,255,.3)}
+
+/* NAV */
+.bottom-nav{display:flex;border-top:1px solid var(--border);background:var(--bg1);flex-shrink:0;padding-bottom:env(safe-area-inset-bottom,0px)}
+.nav-btn{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:9px 2px 7px;gap:3px;background:none;border:none;cursor:pointer;color:var(--textd);transition:color .18s;position:relative}
+.nav-btn:active{opacity:.65}
+.nav-btn.active{color:var(--gold)}
+.nav-btn.active::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:24px;height:2px;background:var(--gold);border-radius:0 0 2px 2px}
+.nav-icon{font-size:18px;line-height:1}
+.nav-label{font-size:9px;letter-spacing:.07em;text-transform:uppercase;font-weight:600}
+.nav-btn.eve-btn.active{color:var(--eve-light)}
+.nav-btn.eve-btn.active::before{background:var(--eve-light)}
+
+/* CARDS */
+.card{border-radius:14px;padding:16px 18px;margin-bottom:11px;border:1px solid var(--border);background:var(--bg2);animation:fadeUp .3s ease both}
+.card-blue{border-color:rgba(106,171,255,.3);background:linear-gradient(150deg,#13161E 55%,rgba(15,42,80,.55) 100%)}
+.card-green{border-color:rgba(62,207,160,.3);background:linear-gradient(150deg,#13161E 55%,rgba(8,55,36,.55) 100%)}
+.card-orange{border-color:rgba(255,140,66,.3);background:linear-gradient(150deg,#13161E 55%,rgba(80,36,10,.55) 100%)}
+.card-purple{border-color:rgba(196,160,255,.3);background:linear-gradient(150deg,#13161E 55%,rgba(55,22,100,.55) 100%)}
+.card-gold{border-color:rgba(212,179,86,.3);background:linear-gradient(150deg,#13161E 55%,rgba(55,38,8,.55) 100%)}
+.card-eve{border-color:rgba(139,111,212,.4);background:linear-gradient(150deg,#13161E 50%,rgba(40,20,80,.65) 100%)}
+.card-red{border-color:rgba(242,95,92,.3);background:linear-gradient(150deg,#13161E 55%,rgba(60,15,15,.55) 100%)}
+.card-label{font-family:'Syne',sans-serif;font-size:10px;letter-spacing:.18em;text-transform:uppercase;font-weight:700;margin-bottom:10px}
+.card-label.blue{color:var(--blue)}.card-label.green{color:var(--green)}.card-label.orange{color:var(--orange)}.card-label.purple{color:var(--purple)}.card-label.gold{color:var(--gold)}.card-label.eve{color:var(--eve-light)}.card-label.red{color:var(--red)}
+.quote-text{font-family:'Cormorant Garamond',serif;font-size:22px;line-height:1.5;font-style:italic;color:#fff;font-weight:400}
+.translation-text{font-size:14px;line-height:1.65;color:var(--textm);font-weight:300}
+.translation-text strong{color:var(--text);font-weight:500}
+
+/* PROMPTS */
+.prompt-list{display:flex;flex-direction:column;gap:8px}
+.prompt-item{display:flex;align-items:flex-start;gap:10px;padding:10px 12px;border-radius:10px;background:rgba(255,255,255,.04);border:1px solid var(--border);font-size:13px;color:var(--text);cursor:pointer;transition:border-color .2s,background .2s}
+.prompt-item:active{border-color:var(--orange);background:rgba(255,140,66,.07)}
+.prompt-num{font-family:'Syne',sans-serif;font-size:10px;color:var(--orange);font-weight:700;flex-shrink:0;padding-top:2px}
+
+/* ACTION CHIPS */
+.action-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.action-chip{padding:13px 10px;border-radius:10px;text-align:center;border:1px solid var(--border);background:rgba(255,255,255,.03);font-size:13px;color:var(--textm);cursor:pointer;transition:all .18s;font-weight:400;line-height:1.3}
+.action-chip:active{transform:scale(.96)}
+.action-chip.selected{border-color:var(--green);color:#fff;background:rgba(62,207,160,.12);box-shadow:0 0 0 1px rgba(62,207,160,.35)}
+
+/* INPUTS */
+.lock-input{width:100%;background:rgba(255,255,255,.05);border:1px solid var(--borderlt);border-radius:10px;padding:12px 14px;color:#fff;font-family:'DM Sans',sans-serif;font-size:14px;resize:none;outline:none;transition:border-color .2s;line-height:1.5}
+.lock-input:focus{border-color:var(--green)}
+.lock-input::placeholder{color:var(--textd)}
+.lock-input.eve-focus:focus{border-color:var(--eve-light)}
+.struggle-input{width:100%;background:rgba(255,255,255,.05);border:1px solid var(--borderlt);border-radius:14px;padding:14px 16px;color:#fff;font-family:'DM Sans',sans-serif;font-size:15px;resize:none;outline:none;min-height:100px;transition:border-color .2s;line-height:1.6}
+.struggle-input:focus{border-color:var(--blue)}
+.struggle-input::placeholder{color:var(--textd)}
+.journal-input{width:100%;background:rgba(255,255,255,.05);border:1px solid var(--borderlt);border-radius:14px;padding:14px 16px;color:#fff;font-family:'DM Sans',sans-serif;font-size:14px;resize:none;outline:none;min-height:120px;transition:border-color .2s;line-height:1.7}
+.journal-input:focus{border-color:var(--purple)}
+.journal-input::placeholder{color:var(--textd)}
+
+/* QA CHIPS */
+.quick-actions{display:flex;flex-wrap:wrap;gap:6px;margin-top:9px}
+.qa-chip{padding:7px 13px;border-radius:20px;border:1px solid var(--border);background:transparent;font-size:12px;color:var(--textm);cursor:pointer;transition:all .18s}
+.qa-chip:active{transform:scale(.94)}
+.qa-chip.sel{border-color:var(--green);color:var(--green);background:rgba(62,207,160,.08)}
+
+/* CTA */
+.cta-btn{width:100%;padding:15px;border-radius:12px;border:none;cursor:pointer;font-family:'Syne',sans-serif;font-size:13px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;transition:all .15s;margin-top:8px}
+.cta-btn:active{transform:scale(.97);opacity:.88}
+.cta-btn.green{background:var(--green);color:#041510}
+.cta-btn.green:disabled{background:var(--bg3);color:var(--textd);cursor:not-allowed;transform:none;opacity:1}
+.cta-btn.blue{background:var(--blue);color:#04131F}
+.cta-btn.purple-btn{background:var(--purple);color:#1A0030}
+.cta-btn.eve-btn-cta{background:linear-gradient(135deg,#6B4FC8,#9B6FE4);color:#fff;box-shadow:0 4px 20px rgba(139,111,212,.3)}
+.cta-btn.eve-btn-cta:disabled{background:var(--bg3);color:var(--textd);cursor:not-allowed;transform:none;opacity:1;box-shadow:none}
+.cta-btn.ghost{background:rgba(255,255,255,.05);color:var(--textm);border:1px solid var(--border)}
+.cta-btn.ghost:active{background:rgba(255,255,255,.1);color:var(--text)}
+.cta-btn.danger{background:rgba(242,95,92,.15);color:var(--red);border:1px solid rgba(242,95,92,.3)}
+
+/* STREAK */
+.streak-row{display:flex;align-items:center;gap:12px;padding:13px 16px;border-radius:12px;background:linear-gradient(135deg,rgba(55,38,8,.7) 0%,var(--bg2) 100%);border:1px solid rgba(212,179,86,.25);margin-bottom:11px}
+.streak-num{font-family:'Cormorant Garamond',serif;font-size:42px;line-height:1;font-weight:600;color:var(--gold)}
+.streak-label{font-size:12px;color:var(--textm);line-height:1.5}
+.streak-label strong{display:block;color:var(--text);font-size:14px;font-weight:500}
+
+/* THEME PROGRESS */
+.theme-bar{display:flex;gap:5px;padding:10px 16px 6px;flex-shrink:0;overflow-x:auto}
+.theme-bar::-webkit-scrollbar{display:none}
+.theme-pill{padding:4px 10px;border-radius:20px;font-family:'Syne',sans-serif;font-size:9px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;white-space:nowrap;border:1px solid var(--border);color:var(--textd);flex-shrink:0;transition:all .3s}
+.theme-pill.used{color:var(--gold);border-color:rgba(212,179,86,.35);background:rgba(212,179,86,.08)}
+.theme-pill.current{color:#fff;border-color:var(--gold);background:rgba(212,179,86,.18);box-shadow:0 0 8px rgba(212,179,86,.2)}
+
+/* SECTION HDR */
+.section-hdr{margin-bottom:14px}
+.section-hdr h2{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:400;color:#fff;line-height:1.25}
+.section-hdr p{font-size:13px;color:var(--textm);margin-top:3px}
+.day-intro{padding:8px 16px 2px;font-family:'Cormorant Garamond',serif;font-size:15px;font-style:italic;color:var(--textd);flex-shrink:0}
+.divider{height:1px;background:var(--border);margin:12px 0}
+
+/* LOADING */
+.loading-dots{display:flex;gap:5px;align-items:center;padding:6px 0}
+.loading-dots span{width:6px;height:6px;border-radius:50%;background:var(--blue);animation:dot 1.2s ease-in-out infinite}
+.loading-dots span:nth-child(2){animation-delay:.2s}
+.loading-dots span:nth-child(3){animation-delay:.4s}
+@keyframes dot{0%,80%,100%{opacity:.2;transform:scale(.8)}40%{opacity:1;transform:scale(1)}}
+.ai-status{display:flex;align-items:center;gap:8px;padding:8px 12px;border-radius:9px;background:rgba(106,171,255,.07);border:1px solid rgba(106,171,255,.2);margin-bottom:10px;font-size:12px;color:var(--blue)}
+.ai-status .dot-pulse{width:6px;height:6px;border-radius:50%;background:var(--blue);animation:dot .8s ease-in-out infinite;flex-shrink:0}
+.ai-status.eve{background:rgba(139,111,212,.1);border-color:rgba(139,111,212,.3);color:var(--eve-light)}
+.ai-status.eve .dot-pulse{background:var(--eve-light)}
+
+/* ERROR */
+.error-card{padding:14px 16px;border-radius:12px;background:rgba(242,95,92,.08);border:1px solid rgba(242,95,92,.25);margin-bottom:10px}
+.error-card p{font-size:13px;color:var(--red);line-height:1.5}
+
+.hidden{display:none!important}
+.feedback-row{display:flex;gap:8px;align-items:center;margin-top:10px}
+.feedback-q{font-size:12px;color:var(--textd);flex:1}
+.fb-btn{padding:5px 12px;border-radius:20px;font-size:12px;border:1px solid var(--border);background:transparent;color:var(--textm);cursor:pointer;transition:all .18s}
+.fb-btn:active{border-color:var(--green);color:var(--green)}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+
+/* CATEGORY CHIPS */
+.category-chips{display:flex;flex-wrap:wrap;gap:7px;margin:12px 0}
+.cat-chip{padding:7px 14px;border-radius:20px;cursor:pointer;font-size:12px;font-weight:500;letter-spacing:.04em;border:1px solid var(--border);background:transparent;color:var(--textm);transition:all .18s}
+.cat-chip:active{transform:scale(.94)}
+.cat-chip.fear{border-color:rgba(242,95,92,.35)}.cat-chip.dist{border-color:rgba(255,140,66,.35)}.cat-chip.people{border-color:rgba(106,171,255,.35)}.cat-chip.uncert{border-color:rgba(196,160,255,.35)}
+.cat-chip.active.fear{background:rgba(242,95,92,.15);color:var(--red);border-color:var(--red)}
+.cat-chip.active.dist{background:rgba(255,140,66,.15);color:var(--orange);border-color:var(--orange)}
+.cat-chip.active.people{background:rgba(106,171,255,.15);color:var(--blue);border-color:var(--blue)}
+.cat-chip.active.uncert{background:rgba(196,160,255,.15);color:var(--purple);border-color:var(--purple)}
+
+/* TOGGLE */
+.brutal-toggle{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border-radius:10px;background:rgba(255,255,255,.03);border:1px solid var(--border);margin-bottom:12px}
+.toggle-label{font-size:13px;color:var(--text)}
+.toggle-label span{display:block;font-size:11px;color:var(--textm);margin-top:1px}
+.toggle-switch{width:42px;height:24px;border-radius:12px;background:var(--border);position:relative;cursor:pointer;transition:background .2s;flex-shrink:0}
+.toggle-switch.on{background:var(--red)}
+.toggle-switch::after{content:'';position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:50%;background:#fff;transition:transform .2s;box-shadow:0 1px 3px rgba(0,0,0,.4)}
+.toggle-switch.on::after{transform:translateX(18px)}
+
+/* ACTION STEPS */
+.action-steps{display:flex;flex-direction:column;gap:8px}
+.step-row{display:flex;align-items:flex-start;gap:10px;padding:10px 12px;border-radius:10px;background:rgba(255,255,255,.04);border:1px solid var(--border)}
+.step-num{width:22px;height:22px;border-radius:50%;flex-shrink:0;background:rgba(62,207,160,.15);border:1px solid rgba(62,207,160,.35);display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-size:10px;font-weight:700;color:var(--green)}
+.step-text{font-size:13px;color:var(--text);line-height:1.5;padding-top:2px}
+
+/* MEDITATE NAV */
+.med-nav-links{display:flex;padding:0;border-bottom:1px solid var(--border);background:var(--bg);flex-shrink:0}
+.med-nav-link{flex:1;padding:13px 6px;text-align:center;font-family:'Syne',sans-serif;font-size:11px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;color:var(--textd);cursor:pointer;border:none;background:none;border-bottom:2px solid transparent;transition:all .2s;margin-bottom:-1px}
+.med-nav-link:active{opacity:.7}
+.med-nav-link.active{color:var(--purple);border-bottom-color:var(--purple)}
+
+/* BREATHE */
+.breathe-wrap{display:flex;flex-direction:column;align-items:center;padding:22px 0 18px;gap:14px}
+.breathe-ring{width:140px;height:140px;border-radius:50%;background:radial-gradient(circle,rgba(196,160,255,.22) 0%,rgba(196,160,255,.03) 70%);border:2px solid rgba(196,160,255,.45);display:flex;align-items:center;justify-content:center;position:relative;animation:breathe 8s ease-in-out infinite}
+.breathe-ring::before{content:'';position:absolute;inset:-10px;border-radius:50%;border:1px solid rgba(196,160,255,.14);animation:breathe 8s ease-in-out infinite .6s}
+.breathe-ring::after{content:'';position:absolute;inset:-20px;border-radius:50%;border:1px solid rgba(196,160,255,.07);animation:breathe 8s ease-in-out infinite 1.2s}
+.breathe-inner{font-family:'Syne',sans-serif;font-size:12px;letter-spacing:.15em;color:var(--purple);text-transform:uppercase;font-weight:700}
+@keyframes breathe{0%,100%{transform:scale(1);opacity:.75}50%{transform:scale(1.2);opacity:1}}
+.breathe-label{font-size:13px;color:var(--textm)}
+
+/* STATE GRID */
+.state-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px}
+.state-chip{padding:14px 10px;border-radius:12px;text-align:center;border:1px solid var(--border);background:rgba(255,255,255,.03);cursor:pointer;transition:all .18s}
+.state-chip:active{transform:scale(.95)}
+.state-chip .s-icon{font-size:24px;margin-bottom:5px}
+.state-chip .s-label{font-size:12px;color:var(--textm);font-weight:500}
+.state-chip.active{border-color:var(--purple);background:rgba(196,160,255,.1)}
+.state-chip.active .s-label{color:var(--purple)}
+
+/* STEP FLOW */
+.step-flow{display:flex;gap:6px;align-items:center;margin-bottom:18px}
+.sf-dot{width:7px;height:7px;border-radius:50%;background:var(--border);transition:all .25s}
+.sf-dot.done{background:var(--green)}
+.sf-dot.current{background:var(--purple);transform:scale(1.3)}
+
+/* TIMER */
+.timer-display{font-family:'Cormorant Garamond',serif;font-size:68px;font-weight:300;color:#fff;text-align:center;letter-spacing:-2px;line-height:1;margin-bottom:12px}
+.timer-controls{display:flex;gap:8px;justify-content:center;margin-bottom:4px}
+.timer-len{padding:7px 18px;border-radius:20px;border:1px solid var(--border);background:transparent;font-size:13px;color:var(--textm);cursor:pointer;transition:all .18s}
+.timer-len.active{border-color:var(--purple);color:var(--purple);background:rgba(196,160,255,.08)}
+.focus-line{font-family:'Cormorant Garamond',serif;font-size:19px;font-style:italic;color:var(--textm);text-align:center;padding:14px 8px;line-height:1.65}
+
+/* SC TOGGLES */
+.sc-row{display:flex;align-items:center;gap:12px;padding:11px 14px;border-radius:10px;background:rgba(255,255,255,.03);border:1px solid var(--border);margin-bottom:9px}
+.sc-label{flex:1}
+.sc-label strong{display:block;font-size:13px;color:var(--text);font-weight:500}
+.sc-label span{font-size:11px;color:var(--textm)}
+.sc-sw{width:42px;height:24px;border-radius:12px;position:relative;cursor:pointer;transition:background .2s;flex-shrink:0}
+.sc-sw::after{content:'';position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:50%;background:#fff;transition:transform .2s;box-shadow:0 1px 3px rgba(0,0,0,.4)}
+
+/* ═══ EVENING ENGINE SPECIFIC ═══ */
+.eve-header{
+  padding:20px 16px 14px;
+  background:linear-gradient(180deg,rgba(40,20,80,.5) 0%,transparent 100%);
+  border-bottom:1px solid rgba(139,111,212,.2);
+  flex-shrink:0;
+}
+.eve-greeting{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:400;color:#fff;line-height:1.3;margin-bottom:4px}
+.eve-sub{font-size:13px;color:var(--textm)}
+
+.eve-section-title{font-family:'Syne',sans-serif;font-size:10px;letter-spacing:.18em;text-transform:uppercase;font-weight:700;color:var(--eve-light);margin-bottom:10px}
+
+/* Committed actions review */
+.committed-list{display:flex;flex-direction:column;gap:8px;margin-bottom:14px}
+.committed-item{border-radius:12px;border:1px solid var(--border);background:var(--bg2);overflow:hidden}
+.committed-item-header{display:flex;align-items:center;gap:10px;padding:11px 14px}
+.committed-tag{font-family:'Syne',sans-serif;font-size:9px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;padding:3px 9px;border-radius:20px;flex-shrink:0}
+.committed-tag.morning{background:rgba(212,179,86,.15);color:var(--gold);border:1px solid rgba(212,179,86,.25)}
+.committed-tag.midday{background:rgba(255,140,66,.15);color:var(--orange);border:1px solid rgba(255,140,66,.25)}
+.committed-tag.struggle{background:rgba(106,171,255,.15);color:var(--blue);border:1px solid rgba(106,171,255,.25)}
+.committed-text{font-size:13px;color:var(--text);flex:1;line-height:1.4}
+.committed-text.empty{color:var(--textd);font-style:italic}
+
+/* Accountability selector */
+.acct-selector{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:8px;padding:0 14px 12px}
+.acct-btn{padding:9px 8px;border-radius:10px;text-align:center;border:1px solid var(--border);background:transparent;font-size:12px;font-weight:500;color:var(--textm);cursor:pointer;transition:all .18s;line-height:1.3}
+.acct-btn:active{transform:scale(.95)}
+.acct-btn.done.sel     {border-color:var(--green);color:var(--green);background:rgba(62,207,160,.1)}
+.acct-btn.partial.sel  {border-color:var(--gold);color:var(--gold);background:rgba(212,179,86,.1)}
+.acct-btn.notdone.sel  {border-color:var(--red);color:var(--red);background:rgba(242,95,92,.1)}
+.acct-btn.still.sel    {border-color:var(--orange);color:var(--orange);background:rgba(255,140,66,.1)}
+
+/* Evening result cards */
+.eve-result-cards{margin-top:14px}
+
+/* Tomorrow lock */
+.tomorrow-lock{margin-top:4px}
+.tomorrow-lock textarea{border-color:rgba(139,111,212,.4)}
+.tomorrow-lock textarea:focus{border-color:var(--eve-light)}
+
+/* Day score */
+.day-score-row{display:flex;align-items:center;gap:16px;padding:14px 16px;border-radius:12px;background:linear-gradient(135deg,rgba(40,20,80,.6) 0%,var(--bg2) 100%);border:1px solid rgba(139,111,212,.3);margin-bottom:11px}
+.day-score-num{font-family:'Cormorant Garamond',serif;font-size:48px;line-height:1;font-weight:600;color:var(--eve-light)}
+.day-score-label{font-size:12px;color:var(--textm);line-height:1.5}
+.day-score-label strong{display:block;color:var(--text);font-size:14px;font-weight:500}
+.score-bar{height:4px;border-radius:2px;background:var(--border);margin-top:6px;overflow:hidden}
+.score-bar-fill{height:100%;border-radius:2px;background:linear-gradient(90deg,var(--eve),var(--eve-light));transition:width .8s ease}
+
+/* SETTINGS */
+.settings-section{margin-bottom:20px}
+.settings-section-title{font-family:'Syne',sans-serif;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--textd);font-weight:700;margin-bottom:10px;padding:0 2px}
+.settings-row{display:flex;align-items:center;justify-content:space-between;padding:13px 16px;border-radius:12px;background:var(--bg2);border:1px solid var(--border);margin-bottom:8px}
+.settings-row-label{font-size:14px;color:var(--text)}
+.settings-row-sub{font-size:11px;color:var(--textm);margin-top:2px}
+.api-input{width:100%;background:rgba(255,255,255,.05);border:1px solid var(--borderlt);border-radius:10px;padding:12px 14px;color:#fff;font-family:'DM Mono',monospace,'DM Sans',sans-serif;font-size:12px;outline:none;transition:border-color .2s;letter-spacing:.03em}
+.api-input:focus{border-color:var(--gold)}
+.api-input::placeholder{color:var(--textd)}
+.api-key-row{display:flex;gap:8px;margin-top:6px;flex-wrap:wrap}
+.api-status{font-size:11px;padding:3px 10px;border-radius:20px;font-weight:600;letter-spacing:.06em}
+.api-status.ok{background:rgba(62,207,160,.12);color:var(--green);border:1px solid rgba(62,207,160,.25)}
+.api-status.missing{background:rgba(242,95,92,.12);color:var(--red);border:1px solid rgba(242,95,92,.25)}
+
+/* HISTORY */
+.hist-entry{padding:13px 15px;border-radius:12px;background:var(--bg2);border:1px solid var(--border);margin-bottom:9px}
+.hist-entry:active{border-color:var(--borderlt)}
+.hist-meta{display:flex;justify-content:space-between;margin-bottom:5px}
+.hist-date{font-size:11px;color:var(--textd);letter-spacing:.06em;text-transform:uppercase}
+.hist-badge{font-size:10px;padding:2px 8px;border-radius:10px;font-weight:600;letter-spacing:.05em}
+.hist-badge.morning{background:rgba(212,179,86,.12);color:var(--gold)}
+.hist-badge.midday{background:rgba(255,140,66,.12);color:var(--orange)}
+.hist-badge.evening,.hist-badge.eve{background:rgba(139,111,212,.15);color:var(--eve-light)}
+.hist-badge.struggle{background:rgba(106,171,255,.12);color:var(--blue)}
+.hist-badge.meditate{background:rgba(196,160,255,.12);color:var(--purple)}
+.hist-action{font-size:13px;color:var(--text);line-height:1.4}
+.hist-action::before{content:'→ ';color:var(--green);font-weight:600}
+.pattern-insight{padding:13px 15px;border-radius:12px;background:linear-gradient(135deg,rgba(196,160,255,.07) 0%,var(--bg2) 100%);border:1px solid rgba(196,160,255,.22);margin-bottom:9px}
+.pi-label{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--purple);font-weight:700;margin-bottom:5px;font-family:'Syne',sans-serif}
+.pi-text{font-size:13px;color:var(--textm);line-height:1.55}
+
+/* MODAL */
+.modal-backdrop{display:none;position:fixed;inset:0;background:rgba(0,0,0,.82);z-index:100;align-items:center;justify-content:center;padding:24px}
+.modal-backdrop.open{display:flex}
+.modal{background:var(--bg2);border:1px solid var(--borderlt);border-radius:20px;padding:28px 22px;width:100%;max-width:360px;text-align:center;animation:popIn .3s cubic-bezier(.34,1.56,.64,1) both}
+@keyframes popIn{from{opacity:0;transform:scale(.82)}to{opacity:1;transform:scale(1)}}
+.modal-icon{font-size:46px;margin-bottom:12px}
+.modal-title{font-family:'Syne',sans-serif;font-size:20px;font-weight:700;color:#fff;margin-bottom:8px}
+.modal-sub{font-size:14px;color:var(--textm);line-height:1.65;margin-bottom:16px}
+.modal-action{font-size:13px;color:var(--green);padding:10px 14px;background:rgba(62,207,160,.1);border-radius:9px;margin-bottom:18px;font-style:italic;border:1px solid rgba(62,207,160,.2)}
+.modal-btns{display:flex;gap:8px}
+.modal-btns .cta-btn{margin-top:0;flex:1}
+</style>
+</head>
+<body>
+<div id="app">
+
+<!-- ══ HOME ══ -->
+<div class="screen active" id="screen-home">
+  <div class="topbar">
+    <div><div class="topbar-title">ClearMind OS</div><div class="topbar-date" id="home-date"></div></div>
+    <span class="time-badge" id="time-badge"></span>
+  </div>
+  <div class="theme-bar" id="theme-bar"></div>
+  <div class="day-intro" id="day-intro"></div>
+  <div class="scroll-body">
+    <div class="streak-row">
+      <div class="streak-num" id="streak-num">0</div>
+      <div class="streak-label"><strong>Day Streak 🔥</strong>Complete today's session to hold it.</div>
+    </div>
+    <div id="home-ai-status" class="ai-status"><div class="dot-pulse"></div><span id="home-ai-msg">Generating today's session…</span></div>
+    <div id="home-error" class="error-card hidden"><p id="home-error-msg"></p><button class="cta-btn ghost" style="margin-top:8px;padding:10px" onclick="loadHomeContent()">Retry</button></div>
+    <div id="home-content" class="hidden">
+      <div class="card card-gold"><div class="card-label gold">Original Thought · Meditations</div><div class="quote-text" id="home-quote"></div></div>
+      <div class="card card-blue"><div class="card-label blue">Direct Translation</div><div class="translation-text" id="home-translation" style="color:var(--text)"></div></div>
+      <div class="card card-orange"><div class="card-label orange">Modern Application</div><div class="translation-text" id="home-application"></div></div>
+      <div class="card card-green"><div class="card-label green">Choose Your Posture Today</div><div class="action-grid" id="home-actions"></div></div>
+      <div class="card card-purple">
+        <div class="card-label purple">Execution Lock · Next 3 Hours</div>
+        <p class="translation-text" style="color:var(--text);margin-bottom:10px">Name one thing you will actually do.</p>
+        <textarea class="lock-input" id="home-lock" rows="2" placeholder="I will…"></textarea>
+        <div class="quick-actions" id="home-qa"></div>
+      </div>
+      <button class="cta-btn green" id="home-complete" disabled onclick="completeSession()">Complete Session</button>
+      <div class="feedback-row"><span class="feedback-q">Did this help?</span><button class="fb-btn" onclick="fbTap(this,'👍 Thanks')">👍 Yes</button><button class="fb-btn" onclick="fbTap(this,'👎 Noted')">👎 No</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ STRUGGLE ══ -->
+<div class="screen" id="screen-struggle">
+  <div class="topbar"><div class="topbar-title">BEHAVIOR ENGINE</div><span style="font-size:12px;color:var(--textm)">Pattern → Correction</span></div>
+  <div class="scroll-body">
+    <div class="section-hdr"><h2>What are you struggling with?</h2><p>Be specific. Vague input returns vague output.</p></div>
+    <div class="brutal-toggle"><div class="toggle-label">Direct Mode<span>Firm correction, no softening.</span></div><div class="toggle-switch" id="brutal-switch" onclick="toggleBrutal()"></div></div>
+    <textarea class="struggle-input" id="struggle-input" placeholder="Describe what is happening. What have you been doing or avoiding?…" rows="4"></textarea>
+    <div class="category-chips">
+      <button class="cat-chip fear"   onclick="toggleCat(this,'fear')">Fear</button>
+      <button class="cat-chip dist"   onclick="toggleCat(this,'dist')">Distraction</button>
+      <button class="cat-chip people" onclick="toggleCat(this,'people')">People</button>
+      <button class="cat-chip uncert" onclick="toggleCat(this,'uncert')">Uncertainty</button>
+    </div>
+    <button class="cta-btn blue" onclick="runBehaviorEngine()">Analyze →</button>
+    <div id="struggle-loading" class="hidden" style="padding:14px 0"><div class="ai-status"><div class="dot-pulse"></div><span>Behavior Engine processing…</span></div></div>
+    <div id="struggle-error" class="error-card hidden" style="margin-top:12px"><p id="struggle-error-msg"></p></div>
+    <div id="struggle-results" class="hidden" style="margin-top:14px">
+      <div class="card card-orange"><div class="card-label orange">Pattern Identified</div><div class="translation-text" id="s-pattern" style="color:var(--text)"></div></div>
+      <div class="card card-blue"><div class="card-label blue">What You Are Missing</div><div class="translation-text" id="s-insight" style="color:var(--text)"></div></div>
+      <div class="card card-purple"><div class="card-label purple">Correction</div><div class="translation-text" id="s-correction" style="color:var(--text)"></div></div>
+      <div class="card card-green">
+        <div class="card-label green">Lock In · Next 10 Minutes</div>
+        <p class="translation-text" style="color:var(--text);margin-bottom:10px">One thing. Right now.</p>
+        <div class="translation-text" id="s-action-display" style="color:var(--green);font-style:italic;margin-bottom:10px"></div>
+        <textarea class="lock-input" id="s-lock" rows="2" placeholder="In the next 10 minutes I will…"></textarea>
+      </div>
+      <button class="cta-btn green" onclick="lockStruggle()">Lock It In →</button>
+      <div class="feedback-row"><span class="feedback-q">Did this help?</span><button class="fb-btn" onclick="fbTap(this,'👍 Thanks')">👍 Yes</button><button class="fb-btn" onclick="fbTap(this,'👎 Noted')">👎 No</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ EVENING ENGINE ══ -->
+<div class="screen" id="screen-evening">
+  <div class="eve-header">
+    <div class="eve-greeting" id="eve-greeting">Good evening. Let's review your day.</div>
+    <div class="eve-sub" id="eve-date-sub"></div>
+  </div>
+  <div class="scroll-body" id="eve-scroll">
+
+    <!-- PHASE 1: INPUT -->
+    <div id="eve-phase-input">
+
+      <!-- Day score from committed actions -->
+      <div id="eve-day-score" class="day-score-row hidden">
+        <div class="day-score-num" id="eve-score-num">0%</div>
+        <div class="day-score-label">
+          <strong id="eve-score-label">Day Accountability</strong>
+          <span id="eve-score-sub">Rate each commitment below</span>
+          <div class="score-bar"><div class="score-bar-fill" id="eve-score-fill" style="width:0%"></div></div>
+        </div>
+      </div>
+
+      <!-- Committed actions -->
+      <div class="eve-section-title">Today You Committed To</div>
+      <div class="committed-list" id="eve-committed-list">
+        <div style="font-size:13px;color:var(--textd);padding:12px;text-align:center">No sessions logged today yet.<br>Complete a morning or midday session first.</div>
+      </div>
+
+      <!-- Review button -->
+      <button class="cta-btn eve-btn-cta" id="eve-review-btn" onclick="runEveningEngine()" disabled>Review My Day →</button>
+
+      <div id="eve-loading" class="hidden" style="padding:14px 0"><div class="ai-status eve"><div class="dot-pulse"></div><span>Evening Engine analyzing your day…</span></div></div>
+      <div id="eve-error" class="error-card hidden" style="margin-top:12px"><p id="eve-error-msg"></p><button class="cta-btn ghost" style="margin-top:8px;padding:10px" onclick="runEveningEngine()">Retry</button></div>
+    </div>
+
+    <!-- PHASE 2: RESULTS -->
+    <div id="eve-phase-results" class="hidden">
+
+      <div id="eve-result-cards" class="eve-result-cards">
+        <div class="card card-eve"><div class="card-label eve">Day Summary</div><div class="translation-text" id="eve-r-summary" style="color:var(--text)"></div></div>
+        <div class="card card-orange"><div class="card-label orange">Behavioral Pattern</div><div class="translation-text" id="eve-r-pattern"></div></div>
+        <div class="card card-red"><div class="card-label red">Accountability</div><div class="translation-text" id="eve-r-accountability" style="color:var(--text)"></div></div>
+        <div class="card card-blue"><div class="card-label blue">Adjustment</div><div class="translation-text" id="eve-r-adjustment" style="color:var(--text)"></div></div>
+        <div class="card card-green"><div class="card-label green">Tomorrow's Focus</div><div class="translation-text" id="eve-r-tomorrow" style="color:var(--text);font-style:italic"></div></div>
+      </div>
+
+      <div class="divider"></div>
+
+      <!-- Tomorrow lock -->
+      <div class="tomorrow-lock">
+        <div class="eve-section-title">What Will You Do Differently Tomorrow?</div>
+        <textarea class="lock-input eve-focus" id="eve-tomorrow-input" rows="3" placeholder="Tomorrow I will…"></textarea>
+        <button class="cta-btn eve-btn-cta" id="eve-lock-btn" onclick="lockTomorrow()">Lock Tomorrow →</button>
+      </div>
+
+      <div class="feedback-row" style="margin-top:14px"><span class="feedback-q">Did this review help?</span><button class="fb-btn" onclick="fbTap(this,'👍 Thanks')">👍 Yes</button><button class="fb-btn" onclick="fbTap(this,'👎 Noted')">👎 No</button></div>
+
+      <button class="cta-btn ghost" style="margin-top:12px" onclick="resetEveningPhase()">← Review Again</button>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══ MEDITATE ══ -->
+<div class="screen" id="screen-meditate">
+  <div class="topbar"><div class="topbar-title">MEDITATE</div></div>
+  <div class="med-nav-links">
+    <button class="med-nav-link active" id="mlink-guided"  onclick="setMeditateMode('guided')">Reset</button>
+    <button class="med-nav-link"        id="mlink-reflect" onclick="setMeditateMode('reflect')">Reflect</button>
+    <button class="med-nav-link"        id="mlink-silent"  onclick="setMeditateMode('silent')">Silence</button>
+  </div>
+  <div class="scroll-body">
+    <div id="mode-guided">
+      <div class="step-flow" id="guided-steps"><div class="sf-dot current"></div><div class="sf-dot"></div><div class="sf-dot"></div><div class="sf-dot"></div><div class="sf-dot"></div></div>
+      <div id="g-step-1">
+        <div class="section-hdr"><h2>How are you right now?</h2><p>Select your state to begin.</p></div>
+        <div class="state-grid">
+          <div class="state-chip" onclick="selectState(this,'stress')"><div class="s-icon">😤</div><div class="s-label">Stress</div></div>
+          <div class="state-chip" onclick="selectState(this,'anger')"><div class="s-icon">🔥</div><div class="s-label">Anger</div></div>
+          <div class="state-chip" onclick="selectState(this,'fear')"><div class="s-icon">😰</div><div class="s-label">Fear</div></div>
+          <div class="state-chip" onclick="selectState(this,'confusion')"><div class="s-icon">🌫</div><div class="s-label">Confusion</div></div>
+        </div>
+      </div>
+      <div id="g-step-2" class="hidden">
+        <div class="section-hdr"><h2>Breathe.</h2><p>4 in · hold · 6 out.</p></div>
+        <div class="breathe-wrap"><div class="breathe-ring"><div class="breathe-inner" id="breathe-label">Inhale</div></div><div class="breathe-label" id="breathe-sub">Expand your chest fully</div></div>
+        <button class="cta-btn ghost" onclick="guidedNext(3)">I'm Calm. Continue →</button>
+      </div>
+      <div id="g-step-3" class="hidden">
+        <div id="g-insight-loading" class="ai-status"><div class="dot-pulse"></div><span>Retrieving Stoic insight…</span></div>
+        <div id="g-insight-content" class="hidden"><div class="card card-purple"><div class="card-label purple">For This Moment</div><div class="quote-text" id="g-quote" style="font-size:19px"></div></div></div>
+        <button class="cta-btn ghost" onclick="guidedNext(4)">Understood. Continue →</button>
+      </div>
+      <div id="g-step-4" class="hidden">
+        <div class="section-hdr"><h2>Reframe it.</h2></div>
+        <div class="card card-blue"><div class="card-label blue">The Reframe</div><div class="translation-text" id="g-reframe" style="color:var(--text)"></div></div>
+        <button class="cta-btn ghost" onclick="guidedNext(5)">Continue →</button>
+      </div>
+      <div id="g-step-5" class="hidden">
+        <div class="section-hdr"><h2>The calm next step.</h2></div>
+        <textarea class="lock-input" id="g-calm-input" rows="3" placeholder="One calm, clear action right now…"></textarea>
+        <button class="cta-btn purple-btn" onclick="completeGuided()" style="margin-top:10px">Complete Reset</button>
+      </div>
+    </div>
+    <div id="mode-reflect" class="hidden">
+      <div class="section-hdr"><h2>Write freely.</h2><p>Raw. No judgment.</p></div>
+      <textarea class="journal-input" id="journal-input" rows="6" placeholder="What is weighing on you? What patterns do you see in yourself?…"></textarea>
+      <button class="cta-btn purple-btn" onclick="analyzeJournal()" style="margin-top:10px">Analyze →</button>
+      <div id="journal-loading" class="hidden" style="padding:14px 0"><div class="ai-status"><div class="dot-pulse"></div><span>Behavior Engine analyzing…</span></div></div>
+      <div id="journal-error" class="error-card hidden" style="margin-top:12px"><p id="journal-error-msg"></p></div>
+      <div id="journal-result" class="hidden" style="margin-top:14px">
+        <div class="card card-blue"><div class="card-label blue">Core Issue</div><div class="translation-text" id="j-core" style="color:var(--text)"></div></div>
+        <div class="card card-orange"><div class="card-label orange">Pattern Detected</div><div class="translation-text" id="j-pattern"></div></div>
+        <div class="card card-gold"><div class="card-label gold">Correction</div><div class="quote-text" id="j-principle" style="font-size:17px"></div></div>
+      </div>
+    </div>
+    <div id="mode-silent" class="hidden">
+      <div class="section-hdr"><h2>Enter stillness.</h2><p>Nothing to do. Nowhere to be.</p></div>
+      <div class="sc-row"><div class="sc-label"><strong>🔔 Completion Sound</strong><span>Soft chime when timer ends</span></div><div class="sc-sw" id="sw-sound" onclick="toggleSC('sound')"></div></div>
+      <div class="sc-row"><div class="sc-label"><strong>📳 Vibration</strong><span>Gentle pulse on completion</span></div><div class="sc-sw" id="sw-vibrate" onclick="toggleSC('vibrate')"></div></div>
+      <div style="text-align:center;padding:16px 0 8px">
+        <div class="timer-display" id="timer-display">5:00</div>
+        <div class="timer-controls"><button class="timer-len" id="tlen-1" onclick="setTimerLen(1,this)">1 min</button><button class="timer-len" id="tlen-3" onclick="setTimerLen(3,this)">3 min</button><button class="timer-len active" id="tlen-5" onclick="setTimerLen(5,this)">5 min</button></div>
+      </div>
+      <div class="breathe-wrap" style="padding:10px 0"><div class="breathe-ring" style="width:100px;height:100px"><div class="breathe-inner" style="font-size:10px">Breathe</div></div></div>
+      <div class="focus-line" id="silent-focus"></div>
+      <div style="display:flex;gap:8px;margin-top:6px"><button class="cta-btn ghost" style="flex:1" onclick="startTimer()">Begin</button><button class="cta-btn ghost" style="flex:1" onclick="stopTimer()">Stop</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ HISTORY ══ -->
+<div class="screen" id="screen-history">
+  <div class="topbar"><div class="topbar-title">HISTORY</div><span style="font-size:12px;color:var(--textm)">Patterns · Progress</span></div>
+  <div class="scroll-body">
+    <div id="history-patterns"></div>
+    <div class="divider"></div>
+    <div style="font-family:'Syne',sans-serif;font-size:10px;letter-spacing:.14em;color:var(--textd);text-transform:uppercase;margin-bottom:10px">Recent Sessions</div>
+    <div id="history-list"></div>
+    <button class="cta-btn danger" style="margin-top:16px" onclick="clearHistory()">Clear All History</button>
+  </div>
+</div>
+
+<!-- ══ SETTINGS ══ -->
+<div class="screen" id="screen-settings">
+  <div class="topbar"><div class="topbar-title">SETTINGS</div></div>
+  <div class="scroll-body">
+    <div class="settings-section">
+      <div class="settings-section-title">API Configuration</div>
+      <div class="settings-row" style="flex-direction:column;align-items:flex-start;gap:10px">
+        <div><div class="settings-row-label">OpenRouter API Key</div><div class="settings-row-sub">Required for AI content generation</div></div>
+        <input class="api-input" type="password" id="api-key-input" placeholder="sk-or-v1-…" autocomplete="off" spellcheck="false"/>
+        <div class="api-key-row">
+          <button class="cta-btn green" style="margin-top:0;padding:10px 20px;width:auto" onclick="saveApiKey()">Save Key</button>
+          <button class="cta-btn ghost" style="margin-top:0;padding:10px 20px;width:auto" onclick="toggleShowKey()">Show</button>
+          <span class="api-status" id="api-key-status">Not set</span>
+        </div>
+        <p style="font-size:11px;color:var(--textd);line-height:1.6">Get your key at <strong style="color:var(--textm)">openrouter.ai</strong>. Free tier available. Stored locally only.</p>
+      </div>
+    </div>
+    <div class="settings-section">
+      <div class="settings-section-title">Model</div>
+      <div class="settings-row">
+        <div><div class="settings-row-label">AI Model</div><div class="settings-row-sub" id="model-display">google/gemini-flash-1.5</div></div>
+        <select id="model-select" style="background:var(--bg3);border:1px solid var(--border);color:var(--text);padding:6px 10px;border-radius:8px;font-size:12px;outline:none" onchange="saveModel()">
+          <option value="google/gemini-flash-1.5">Gemini Flash 1.5 (Fast · Free)</option>
+          <option value="google/gemini-pro-1.5">Gemini Pro 1.5 (Balanced)</option>
+          <option value="anthropic/claude-3-haiku">Claude 3 Haiku (Fast)</option>
+          <option value="anthropic/claude-3.5-sonnet">Claude 3.5 Sonnet (Best)</option>
+          <option value="openai/gpt-4o-mini">GPT-4o Mini (Fast)</option>
+          <option value="meta-llama/llama-3.1-8b-instruct:free">Llama 3.1 8B (Free)</option>
+        </select>
+      </div>
+    </div>
+    <div class="settings-section">
+      <div class="settings-section-title">Your Name (for Evening greeting)</div>
+      <div class="settings-row" style="flex-direction:column;align-items:flex-start;gap:8px">
+        <input class="lock-input" type="text" id="user-name-input" placeholder="Enter your name…" style="font-size:14px" oninput="saveName()"/>
+      </div>
+    </div>
+    <div class="settings-section">
+      <div class="settings-section-title">Progression</div>
+      <div class="settings-row"><div><div class="settings-row-label">Themes Used</div><div class="settings-row-sub" id="themes-used-display">0 / 6</div></div><button class="cta-btn danger" style="width:auto;margin-top:0;padding:8px 16px;font-size:11px" onclick="resetThemes()">Reset</button></div>
+      <div class="settings-row" style="flex-direction:column;align-items:flex-start;gap:6px">
+        <div class="settings-row-label">Cache</div>
+        <div class="settings-row-sub">Today's content is cached to save API calls</div>
+        <button class="cta-btn ghost" style="width:auto;margin-top:4px;padding:8px 16px;font-size:11px" onclick="clearCache()">Clear Today's Cache</button>
+      </div>
+    </div>
+    <div class="settings-section">
+      <div class="settings-section-title">About</div>
+      <div class="settings-row"><div><div class="settings-row-label">ClearMind OS</div><div class="settings-row-sub">Powered by Meditations · Marcus Aurelius</div></div><span style="font-family:'Syne',sans-serif;font-size:10px;color:var(--textd);letter-spacing:.1em">v3.0</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ NAV ══ -->
+<nav class="bottom-nav">
+  <button class="nav-btn active" id="nav-home"     onclick="goTo('home')"><span class="nav-icon">☀</span><span class="nav-label">Home</span></button>
+  <button class="nav-btn"        id="nav-struggle" onclick="goTo('struggle')"><span class="nav-icon">⚡</span><span class="nav-label">Struggle</span></button>
+  <button class="nav-btn eve-btn" id="nav-evening" onclick="goTo('evening')"><span class="nav-icon">🌙</span><span class="nav-label">Evening</span></button>
+  <button class="nav-btn"        id="nav-meditate" onclick="goTo('meditate')"><span class="nav-icon">◯</span><span class="nav-label">Meditate</span></button>
+  <button class="nav-btn"        id="nav-settings" onclick="goTo('settings')"><span class="nav-icon">⚙</span><span class="nav-label">Settings</span></button>
+</nav>
+</div>
+
+<!-- MODAL -->
+<div class="modal-backdrop" id="success-modal">
+  <div class="modal">
+    <div class="modal-icon"  id="modal-icon">🏛</div>
+    <div class="modal-title" id="modal-title">Session Complete</div>
+    <div class="modal-sub"   id="modal-sub"></div>
+    <div class="modal-action" id="modal-action"></div>
+    <div class="modal-btns">
+      <button class="cta-btn ghost" onclick="closeModal()">Close</button>
+      <button class="cta-btn green" onclick="doneModal()">Done ✓</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ══════════════════════════════════════════════════════════════
+// CONSTANTS
+// ══════════════════════════════════════════════════════════════
+const THEMES = ['control','discipline','ego','time','mortality','duty'];
+const THEME_LABELS = {control:'Control',discipline:'Discipline',ego:'Ego',time:'Time',mortality:'Mortality',duty:'Duty'};
+const OR_ENDPOINT = 'https://openrouter.ai/api/v1/chat/completions';
+const CACHE_TTL = 6 * 60 * 60 * 1000;
+
+const STOIC_SYSTEM = `You are the STOIC ENGINE of ClearMindOS.
+Your knowledge source is STRICTLY the book "Meditations" by Marcus Aurelius.
+Do NOT introduce ideas outside the philosophy, tone, or worldview of this book.
+Your role: Extract and express ideas consistent with Meditations. Preserve its tone and philosophical depth. Translate into practical modern understanding.
+STYLE: Calm. Grounded. Reflective. Philosophical. No fluff.
+OUTPUT FORMAT (STRICT JSON ONLY — no markdown, no backticks, no explanation):
+{"original":"A classical-style statement inspired directly by Meditations (slightly archaic tone, 1-3 sentences)","translation":"Clear direct meaning in simple English (2-3 sentences max)","application":"How this applies in real life today — short and practical (2-3 sentences max)","actions":["Short actionable step 1","Short actionable step 2","Short actionable step 3"]}
+RULES: Each field max 2-5 lines. Keep it concise. No emojis. No text outside JSON.`;
+
+const BEHAVIOR_SYSTEM = `You are the BEHAVIOR ENGINE of ClearMindOS.
+Your role: Detect behavioral patterns. Identify avoidance, inconsistency, or emotional reactions. Provide correction. Push the user toward action.
+TONE: Firm. Direct. Respectful. Encouraging. Slightly challenging. Never insulting.
+OUTPUT FORMAT (STRICT JSON ONLY — no markdown, no backticks, no explanation):
+{"pattern":"Observed pattern (1-2 sentences)","insight":"What the user is doing wrong or missing (1-2 sentences)","correction":"Reframe using grounded reasoning (1-2 sentences)","action":"One clear immediate action (1 sentence)"}
+RULES: 1-2 lines per field. No fluff. No emojis. No extra text outside JSON. Be specific, not generic.`;
+
+const EVENING_SYSTEM = `You are the EVENING ENGINE of ClearMindOS.
+Your role: Review the user's day with honesty and precision. Identify what was done, what was avoided, and what pattern emerges. Provide a clear behavioral correction and a specific action for tomorrow.
+INPUT: The user will give you their committed actions for today, their accountability ratings (Done / Partially Done / Not Done / Still Struggling), and recent behavioral history.
+TONE: Direct. Honest. Grounded. Not harsh. Not soft. Truthful.
+OUTPUT FORMAT (STRICT JSON ONLY — no markdown, no backticks, no explanation):
+{"summary":"Honest 1-2 sentence summary of how the day went based on the data","pattern":"The behavioral pattern you observe across today and recent history (1-2 sentences)","accountability":"Direct honest statement about whether the user followed through — name specifics (1-2 sentences)","adjustment":"One concrete change in approach or thinking for tomorrow (1-2 sentences)","tomorrow":"One specific, actionable focus for tomorrow (1 sentence — start with a verb)"}
+RULES: Be specific — reference the actual actions given. No generic statements. No emojis. No text outside JSON. 1-2 sentences per field maximum.`;
+
+const SILENT_QUOTES = [
+  `"The present moment is all you ever have."`,
+  `"Nowhere can man find a quieter retreat than in his own soul."`,
+  `"Look within. Within is the fountain of good."`,
+  `"Confine yourself to the present."`,
+  `"He is wise who rejoices for what he has, not grieves for what he has not."`,
+];
+
+// ══════════════════════════════════════════════════════════════
+// STATE
+// ══════════════════════════════════════════════════════════════
+let selectedAction=null, brutalMode=false, selectedCat=null;
+let timerInterval=null, timerSeconds=300, timerLen=5;
+let guidedState=null, guidedStep=1, breatheInterval=null;
+let soundOn=true, vibrateOn=true, audioCtx=null;
+let currentGuidedData=null;
+let eveCommittedItems=[], eveAccountability={};
+
+// ══════════════════════════════════════════════════════════════
+// PERSISTENCE
+// ══════════════════════════════════════════════════════════════
+const LS = {
+  get: k => { try { return JSON.parse(localStorage.getItem(k)); } catch(e){ return null; } },
+  set: (k,v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch(e){} },
+  del: k => { try { localStorage.removeItem(k); } catch(e){} }
+};
+
+function getApiKey(){ return localStorage.getItem('cmos_api_key') || ''; }
+function getModel(){ return localStorage.getItem('cmos_model') || 'google/gemini-flash-1.5'; }
+function getUserName(){ return localStorage.getItem('cmos_name') || ''; }
+
+function getThemeProgress(){ return LS.get('cmos_themes') || { used:[], current:null }; }
+function saveThemeProgress(p){ LS.set('cmos_themes', p); }
+
+function pickNextTheme(){
+  const p = getThemeProgress();
+  const unused = THEMES.filter(t => !p.used.includes(t));
+  const pool = unused.length > 0 ? unused : THEMES;
+  const theme = pool[Math.floor(Math.random() * pool.length)];
+  if(unused.length === 0) p.used = [];
+  p.current = theme;
+  if(!p.used.includes(theme)) p.used.push(theme);
+  saveThemeProgress(p);
+  return theme;
+}
+
+function getBehaviorMemory(){
+  const sessions = LS.get('cmos_sessions') || [];
+  const recent = sessions.slice(-7);
+  if(!recent.length) return '';
+  const struggles = recent.filter(s=>s.type==='struggle').map(s=>s.issue).filter(Boolean);
+  const completed = recent.filter(s=>s.completed).map(s=>s.action).filter(Boolean);
+  const missed = recent.filter(s=>!s.completed && s.action).map(s=>s.action).filter(Boolean);
+  let mem = '\n\nUser recent behavior (last 7 days):';
+  if(struggles.length) mem += `\nRepeated struggles: ${struggles.slice(-3).join('; ')}`;
+  if(completed.length) mem += `\nCompleted actions: ${completed.slice(-3).join('; ')}`;
+  if(missed.length) mem += `\nMissed actions: ${missed.slice(-3).join('; ')}`;
+  return mem;
+}
+
+function getTodaySessions(){
+  const sessions = LS.get('cmos_sessions') || [];
+  const todayStr = new Date().toDateString();
+  return sessions.filter(s => new Date(s.ts).toDateString() === todayStr);
+}
+
+function logSession(entry){
+  const sessions = LS.get('cmos_sessions') || [];
+  sessions.push({ ...entry, ts: Date.now() });
+  if(sessions.length > 60) sessions.splice(0, sessions.length - 60);
+  LS.set('cmos_sessions', sessions);
+}
+
+// ══════════════════════════════════════════════════════════════
+// API
+// ══════════════════════════════════════════════════════════════
+async function callAI(systemPrompt, userMessage, retries=2){
+  const key = getApiKey();
+  if(!key) throw new Error('No API key. Go to Settings → add your OpenRouter key.');
+  const model = getModel();
+  for(let attempt=0; attempt<=retries; attempt++){
+    try {
+      const res = await fetch(OR_ENDPOINT, {
+        method:'POST',
+        headers:{'Content-Type':'application/json','Authorization':`Bearer ${key}`,'HTTP-Referer':'https://clearmindos.app','X-Title':'ClearMindOS'},
+        body: JSON.stringify({ model, max_tokens:700, temperature:0.82, messages:[{role:'system',content:systemPrompt},{role:'user',content:userMessage}] })
+      });
+      if(!res.ok){
+        const err = await res.json().catch(()=>({}));
+        const msg = err?.error?.message || `API error ${res.status}`;
+        if(res.status===401) throw new Error('Invalid API key. Check Settings.');
+        if(res.status===402) throw new Error('Insufficient credits on OpenRouter.');
+        if(res.status===429) throw new Error('Rate limit. Wait a moment and retry.');
+        throw new Error(msg);
+      }
+      const data = await res.json();
+      const raw = data?.choices?.[0]?.message?.content || '';
+      return parseJSON(raw);
+    } catch(e){
+      if(attempt===retries) throw e;
+      await new Promise(r=>setTimeout(r,1000*(attempt+1)));
+    }
+  }
+}
+
+function parseJSON(raw){
+  let clean = raw.trim().replace(/^```(?:json)?\s*/i,'').replace(/\s*```$/,'').trim();
+  const start = clean.indexOf('{'), end = clean.lastIndexOf('}');
+  if(start===-1||end===-1) throw new Error('AI returned unexpected format. Retry.');
+  try { return JSON.parse(clean.slice(start,end+1)); }
+  catch(e){ throw new Error('Could not parse AI response. Retry.'); }
+}
+
+// ── RAW TEXT CALL (no JSON parsing) ──────────────────────────
+async function callAIRaw(userMessage){
+  const key = getApiKey();
+  if(!key) throw new Error('no key');
+  const res = await fetch(OR_ENDPOINT, {
+    method:'POST',
+    headers:{'Content-Type':'application/json','Authorization':`Bearer ${key}`,'HTTP-Referer':'https://clearmindos.app','X-Title':'ClearMindOS'},
+    body: JSON.stringify({ model:getModel(), max_tokens:60, temperature:0.9, messages:[{role:'user',content:userMessage}] })
+  });
+  if(!res.ok) throw new Error('api error');
+  const data = await res.json();
+  return (data?.choices?.[0]?.message?.content||'').trim();
+}
+
+// ── CONTEXT SIGNAL ────────────────────────────────────────────
+const SIGNAL_CACHE_TTL = 3 * 60 * 60 * 1000; // 3 hours
+function signalCacheKey(){ return `cmos_signal_${new Date().toDateString()}_${getTimeOfDay()}`; }
+
+async function getContextSignal(){
+  // Return cache if valid
+  const cached = LS.get(signalCacheKey());
+  if(cached && (Date.now()-cached.ts) < SIGNAL_CACHE_TTL) return cached.text;
+
+  const tod = getTimeOfDay();
+  const memory = getBehaviorMemory();
+  // Need at least some memory to be meaningful
+  if(!memory || memory.length < 30) return null;
+
+  const prompt = `You are the BEHAVIOR ENGINE of ClearMindOS.
+Generate ONE behavioral signal sentence for the user.
+Time of day: ${tod}
+${memory}
+RULES:
+- One sentence only. Max 14 words.
+- Direct and personal tone.
+- Slightly challenging — hold the user accountable.
+- No philosophy. No emojis. No fluff. No quotation marks.
+- Start with "You" or a verb or an observation about their behavior.
+Return ONLY the sentence. Nothing else.`;
+
+  try {
+    const text = await callAIRaw(prompt);
+    // Validate: reject if too long, contains JSON, or is empty
+    const clean = text.replace(/["""]/g,'').replace(/^\s*-\s*/,'').trim();
+    if(!clean || clean.length > 120 || clean.includes('{')) return null;
+    LS.set(signalCacheKey(), { text:clean, ts:Date.now() });
+    return clean;
+  } catch(e){
+    return null;
+  }
+}
+
+// ══════════════════════════════════════════════════════════════
+// HOME
+// ══════════════════════════════════════════════════════════════
+function getTimeOfDay(){ const h=new Date().getHours(); return h<12?'morning':h<17?'midday':'evening'; }
+function formatDate(){ return new Date().toLocaleDateString('en-US',{month:'long',day:'numeric'}); }
+function getGreeting(){
+  const name = getUserName();
+  const tod = getTimeOfDay();
+  const date = new Date().toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'});
+  const n = name ? `, ${name}` : '';
+  if(tod==='morning') return `Good morning${n}. Today is ${date}. Set your direction.`;
+  if(tod==='midday')  return `Good afternoon${n}. Stay focused.`;
+  return `Good evening${n}. Let's review your day.`;
+}
+function todayCacheKey(){ return `cmos_home_${new Date().toDateString()}_${getTimeOfDay()}`; }
+
+async function loadHomeContent(){
+  const tod = getTimeOfDay();
+  document.getElementById('home-date').textContent = formatDate();
+  const badge = document.getElementById('time-badge');
+  badge.textContent = {morning:'Morning',midday:'Midday',evening:'Evening'}[tod];
+  badge.className = `time-badge ${tod}`;
+  const el = document.getElementById('day-intro');
+  el.textContent = getGreeting();
+  if(getApiKey()) getContextSignal().then(sig => { if(sig) el.textContent = sig; });
+  document.getElementById('home-ai-status').classList.remove('hidden');
+  document.getElementById('home-error').classList.add('hidden');
+  document.getElementById('home-content').classList.add('hidden');
+  selectedAction=null; document.getElementById('home-complete').disabled=true;
+
+  const cached = LS.get(todayCacheKey());
+  if(cached && (Date.now()-cached.ts)<CACHE_TTL){ renderHomeContent(cached.data,cached.theme); return; }
+
+  try {
+    const theme = pickNextTheme();
+    const timeContext = {morning:'morning reflection and setting intention',midday:'midday recalibration and recommitting to action',evening:'evening review and extracting wisdom'}[tod];
+    const data = await callAI(STOIC_SYSTEM, `Generate a Stoic passage for ${timeContext}. Focus on the theme of: ${theme}. Reflect Marcus Aurelius's voice and philosophy from Meditations.`);
+    LS.set(todayCacheKey(),{data,theme,ts:Date.now()});
+    renderHomeContent(data,theme);
+  } catch(e){
+    document.getElementById('home-ai-status').classList.add('hidden');
+    document.getElementById('home-error-msg').textContent = e.message;
+    document.getElementById('home-error').classList.remove('hidden');
+  }
+}
+
+function renderHomeContent(data,theme){
+  document.getElementById('home-ai-status').classList.add('hidden');
+  document.getElementById('home-quote').textContent = data.original||'';
+  document.getElementById('home-translation').textContent = data.translation||'';
+  document.getElementById('home-application').textContent = data.application||'';
+  const actions = Array.isArray(data.actions)?data.actions:[];
+  document.getElementById('home-actions').innerHTML = actions.map(a=>`<div class="action-chip" onclick="selectAction(this,'${esc(a)}')">${a}</div>`).join('');
+  document.getElementById('home-qa').innerHTML = actions.map(a=>`<button class="qa-chip" onclick="selectQA(this,'home-qa','home-lock','${esc(a)}')" data-v="${esc(a)}">${a}</button>`).join('');
+  document.getElementById('home-lock').oninput = checkHomeComplete;
+  document.getElementById('home-content').classList.remove('hidden');
+  renderThemeBar(theme); updateSettingsDisplay();
+}
+
+function renderThemeBar(current){
+  const p = getThemeProgress();
+  document.getElementById('theme-bar').innerHTML = THEMES.map(t=>{
+    const cls = t===current?'current':p.used.includes(t)?'used':'';
+    return `<div class="theme-pill ${cls}">${THEME_LABELS[t]}</div>`;
+  }).join('');
+}
+
+function selectAction(el,value){
+  document.querySelectorAll('#home-actions .action-chip').forEach(c=>c.classList.remove('selected'));
+  el.classList.add('selected'); selectedAction=value; checkHomeComplete();
+}
+function selectQA(el,groupId,targetId,value){
+  document.getElementById(groupId).querySelectorAll('.qa-chip').forEach(c=>c.classList.remove('sel'));
+  el.classList.add('sel'); document.getElementById(targetId).value=value;
+  if(targetId==='home-lock') checkHomeComplete();
+}
+function checkHomeComplete(){
+  document.getElementById('home-complete').disabled = !(selectedAction && document.getElementById('home-lock').value.trim().length>2);
+}
+function completeSession(){
+  const lock = document.getElementById('home-lock').value.trim();
+  const tod = getTimeOfDay();
+  logSession({type:'home',tod,action:lock||selectedAction,completed:true});
+  document.getElementById('streak-num').textContent = parseInt(document.getElementById('streak-num').textContent)+1;
+  showModal('🏛','Session Complete','You chose clarity over noise. The Stoic acts in this moment — not the next.',lock||selectedAction);
+}
+
+// ══════════════════════════════════════════════════════════════
+// BEHAVIOR ENGINE
+// ══════════════════════════════════════════════════════════════
+function toggleBrutal(){ brutalMode=!brutalMode; document.getElementById('brutal-switch').classList.toggle('on',brutalMode); }
+function toggleCat(el,cat){
+  const was=el.classList.contains('active');
+  document.querySelectorAll('.cat-chip').forEach(c=>c.classList.remove('active'));
+  if(!was){el.classList.add('active');selectedCat=cat;}else selectedCat=null;
+}
+async function runBehaviorEngine(){
+  const inp=document.getElementById('struggle-input'), text=inp.value.trim();
+  if(text.length<10){inp.style.borderColor='var(--red)';setTimeout(()=>inp.style.borderColor='',1500);return;}
+  document.getElementById('struggle-loading').classList.remove('hidden');
+  document.getElementById('struggle-results').classList.add('hidden');
+  document.getElementById('struggle-error').classList.add('hidden');
+  const tone = brutalMode?'Be very direct and firm. Do not soften. Challenge clearly.':'Be firm but respectful and encouraging.';
+  const category = selectedCat?`User flagged this as: ${selectedCat}.`:'';
+  try {
+    const data = await callAI(BEHAVIOR_SYSTEM, `${tone}\n${category}\nUser's current struggle:\n"${text}"${getBehaviorMemory()}`);
+    document.getElementById('s-pattern').textContent = data.pattern||'';
+    document.getElementById('s-insight').textContent = data.insight||'';
+    document.getElementById('s-correction').textContent = data.correction||'';
+    document.getElementById('s-action-display').textContent = data.action?`Suggested: ${data.action}`:'';
+    document.getElementById('s-lock').value = data.action||'';
+    document.getElementById('struggle-loading').classList.add('hidden');
+    document.getElementById('struggle-results').classList.remove('hidden');
+    document.getElementById('struggle-results').scrollIntoView({behavior:'smooth',block:'start'});
+    logSession({type:'struggle',issue:text.slice(0,80),completed:false});
+  } catch(e){
+    document.getElementById('struggle-loading').classList.add('hidden');
+    document.getElementById('struggle-error-msg').textContent=e.message;
+    document.getElementById('struggle-error').classList.remove('hidden');
+  }
+}
+function lockStruggle(){
+  const lock=document.getElementById('s-lock').value.trim();
+  if(!lock){document.getElementById('s-lock').focus();return;}
+  logSession({type:'struggle',action:lock,completed:true});
+  showModal('⚡','Locked In','The Stoic acts. Everything else is commentary.',lock);
+}
+
+// ══════════════════════════════════════════════════════════════
+// EVENING ENGINE
+// ══════════════════════════════════════════════════════════════
+function initEvening(){
+  document.getElementById('eve-greeting').textContent = getGreeting();
+  document.getElementById('eve-date-sub').textContent = formatDate();
+
+  // Reset to phase 1
+  resetEveningPhase();
+
+  // Build committed items from today's sessions
+  const today = getTodaySessions();
+  eveCommittedItems = [];
+  eveAccountability = {};
+
+  // Morning sessions
+  const morning = today.filter(s=>s.type==='home'&&s.tod==='morning'&&s.action);
+  morning.forEach(s=>eveCommittedItems.push({id:`m_${s.ts}`,tag:'morning',text:s.action}));
+
+  // Midday sessions
+  const midday = today.filter(s=>s.type==='home'&&s.tod==='midday'&&s.action);
+  midday.forEach(s=>eveCommittedItems.push({id:`d_${s.ts}`,tag:'midday',text:s.action}));
+
+  // Struggle lock-ins
+  const struggles = today.filter(s=>s.type==='struggle'&&s.completed&&s.action);
+  struggles.forEach(s=>eveCommittedItems.push({id:`s_${s.ts}`,tag:'struggle',text:s.action}));
+
+  renderCommittedList();
+  updateEveReviewBtn();
+}
+
+function renderCommittedList(){
+  const container = document.getElementById('eve-committed-list');
+  if(!eveCommittedItems.length){
+    container.innerHTML = `<div style="font-size:13px;color:var(--textd);padding:14px;text-align:center;line-height:1.6">No sessions logged today.<br>Complete a morning or midday session first.<br><br><button class="cta-btn ghost" style="margin-top:0;padding:10px;width:auto;font-size:12px" onclick="goTo('home')">Go to Home →</button></div>`;
+    document.getElementById('eve-day-score').classList.add('hidden');
+    return;
+  }
+  document.getElementById('eve-day-score').classList.remove('hidden');
+
+  container.innerHTML = eveCommittedItems.map(item => {
+    const sel = eveAccountability[item.id];
+    return `<div class="committed-item" id="ci-${item.id}">
+      <div class="committed-item-header">
+        <span class="committed-tag ${item.tag}">${item.tag}</span>
+        <span class="committed-text">${item.text}</span>
+      </div>
+      <div class="acct-selector">
+        <button class="acct-btn done ${sel==='done'?'sel':''}"    onclick="setAcct('${item.id}','done')">Done</button>
+        <button class="acct-btn partial ${sel==='partial'?'sel':''}" onclick="setAcct('${item.id}','partial')">Partially Done</button>
+        <button class="acct-btn notdone ${sel==='notdone'?'sel':''}" onclick="setAcct('${item.id}','notdone')">Not Done</button>
+        <button class="acct-btn still ${sel==='still'?'sel':''}"   onclick="setAcct('${item.id}','still')">Still Struggling</button>
+      </div>
+    </div>`;
+  }).join('');
+
+  updateDayScore();
+}
+
+function setAcct(id, value){
+  eveAccountability[id] = value;
+  // re-render just the buttons in that item
+  document.querySelectorAll(`#ci-${id} .acct-btn`).forEach(btn=>{
+    btn.classList.remove('sel');
+    if(btn.classList.contains(value)) btn.classList.add('sel');
+  });
+  updateDayScore();
+  updateEveReviewBtn();
+}
+
+function updateDayScore(){
+  if(!eveCommittedItems.length) return;
+  const rated = Object.keys(eveAccountability).length;
+  const total = eveCommittedItems.length;
+  const scoreMap = {done:100, partial:50, notdone:0, still:10};
+  let sum = 0, count = 0;
+  eveCommittedItems.forEach(item=>{
+    const r = eveAccountability[item.id];
+    if(r){ sum += scoreMap[r]||0; count++; }
+  });
+  const pct = count>0 ? Math.round(sum/count) : 0;
+  document.getElementById('eve-score-num').textContent = `${pct}%`;
+  document.getElementById('eve-score-fill').style.width = `${pct}%`;
+  const labels = {0:'Needs Work',1:50?'Partial Progress':'',100:'Excellent'};
+  let lbl = pct>=80?'Strong Day':pct>=50?'Partial Progress':pct>0?'Needs Work':'Rate Your Day';
+  document.getElementById('eve-score-label').textContent = lbl;
+  document.getElementById('eve-score-sub').textContent = `${rated} of ${total} rated`;
+}
+
+function updateEveReviewBtn(){
+  const allRated = eveCommittedItems.length>0 && eveCommittedItems.every(item=>eveAccountability[item.id]);
+  document.getElementById('eve-review-btn').disabled = !allRated;
+}
+
+async function runEveningEngine(){
+  document.getElementById('eve-loading').classList.remove('hidden');
+  document.getElementById('eve-error').classList.add('hidden');
+  document.getElementById('eve-review-btn').disabled = true;
+
+  // Build context string
+  const acctLines = eveCommittedItems.map(item=>{
+    const r = eveAccountability[item.id]||'not rated';
+    const rLabel = {done:'Done',partial:'Partially Done',notdone:'Not Done',still:'Still Struggling'}[r]||r;
+    return `- [${item.tag}] "${item.text}" → ${rLabel}`;
+  }).join('\n');
+
+  const doneCount = eveCommittedItems.filter(i=>eveAccountability[i.id]==='done').length;
+  const totalCount = eveCommittedItems.length;
+  const scoreMap={done:100,partial:50,notdone:0,still:10};
+  let sum=0; eveCommittedItems.forEach(i=>{const r=eveAccountability[i.id]; if(r)sum+=scoreMap[r]||0;});
+  const pct = totalCount>0?Math.round(sum/totalCount):0;
+
+  const userMsg = `Today's committed actions and accountability:\n${acctLines}\n\nOverall completion: ${doneCount}/${totalCount} fully done (${pct}% score).${getBehaviorMemory()}`;
+
+  try {
+    const data = await callAI(EVENING_SYSTEM, userMsg);
+
+    document.getElementById('eve-r-summary').textContent      = data.summary||'';
+    document.getElementById('eve-r-pattern').textContent      = data.pattern||'';
+    document.getElementById('eve-r-accountability').textContent = data.accountability||'';
+    document.getElementById('eve-r-adjustment').textContent   = data.adjustment||'';
+    document.getElementById('eve-r-tomorrow').textContent     = data.tomorrow||'';
+
+    // Pre-fill tomorrow input from AI suggestion
+    const tomorrowInput = document.getElementById('eve-tomorrow-input');
+    if(data.tomorrow && !tomorrowInput.value) tomorrowInput.value = data.tomorrow;
+
+    document.getElementById('eve-loading').classList.add('hidden');
+    document.getElementById('eve-phase-input').classList.add('hidden');
+    document.getElementById('eve-phase-results').classList.remove('hidden');
+    document.getElementById('eve-scroll').scrollTo({top:0,behavior:'smooth'});
+
+    // Save evening result
+    logSession({
+      type:'evening',
+      tod:'evening',
+      acct:eveAccountability,
+      score:pct,
+      pattern:data.pattern,
+      adjustment:data.adjustment,
+      tomorrowSuggestion:data.tomorrow,
+      completed:true
+    });
+
+  } catch(e){
+    document.getElementById('eve-loading').classList.add('hidden');
+    document.getElementById('eve-error-msg').textContent = e.message;
+    document.getElementById('eve-error').classList.remove('hidden');
+    document.getElementById('eve-review-btn').disabled = false;
+  }
+}
+
+function lockTomorrow(){
+  const input = document.getElementById('eve-tomorrow-input').value.trim();
+  if(!input){ document.getElementById('eve-tomorrow-input').focus(); return; }
+
+  // Update the last evening session with the locked tomorrow action
+  const sessions = LS.get('cmos_sessions')||[];
+  const lastEve = [...sessions].reverse().find(s=>s.type==='evening');
+  if(lastEve){ lastEve.tomorrowAction=input; LS.set('cmos_sessions',sessions); }
+
+  // Also store as tomorrow intent
+  LS.set('cmos_tomorrow', {action:input, date:new Date().toDateString()});
+
+  showModal('🌙','Day Complete',
+    'Your review is locked. Rest. Tomorrow you begin with clarity.',
+    input
+  );
+}
+
+function resetEveningPhase(){
+  document.getElementById('eve-phase-input').classList.remove('hidden');
+  document.getElementById('eve-phase-results').classList.add('hidden');
+  document.getElementById('eve-loading').classList.add('hidden');
+  document.getElementById('eve-error').classList.add('hidden');
+  document.getElementById('eve-review-btn').disabled = true;
+  eveAccountability = {};
+}
+
+// ══════════════════════════════════════════════════════════════
+// MEDITATE
+// ══════════════════════════════════════════════════════════════
+function setMeditateMode(mode){
+  ['guided','reflect','silent'].forEach(m=>{
+    document.getElementById(`mode-${m}`).classList.toggle('hidden',m!==mode);
+    document.getElementById(`mlink-${m}`).classList.toggle('active',m===mode);
+  });
+  if(mode==='silent') document.getElementById('silent-focus').textContent=SILENT_QUOTES[Math.floor(Math.random()*SILENT_QUOTES.length)];
+  if(mode==='reflect') setTimeout(()=>document.getElementById('journal-input').focus(),200);
+}
+
+async function selectState(el,state){
+  guidedState=state;
+  document.querySelectorAll('.state-chip').forEach(c=>c.classList.remove('active'));
+  el.classList.add('active');
+  setTimeout(()=>guidedNext(2),350);
+  currentGuidedData=null;
+  const stateMap={stress:'excessive stress and anxiety',anger:'anger and loss of control',fear:'fear and avoidance',confusion:'confusion and lack of clarity'};
+  try {
+    const data = await callAI(STOIC_SYSTEM, `The user is experiencing: ${stateMap[state]||state}. Provide a Stoic insight from Meditations for immediate calming wisdom and a practical reframe.`);
+    currentGuidedData=data;
+  } catch(e){
+    currentGuidedData={original:'"The obstacle to action advances action. What stands in the way becomes the way."',translation:'What you resist is teaching you.',application:'Sit with this state rather than fleeing it. It is information, not a verdict.'};
+  }
+}
+
+function guidedNext(step){
+  for(let i=1;i<=5;i++) document.getElementById(`g-step-${i}`).classList.add('hidden');
+  document.getElementById(`g-step-${step}`).classList.remove('hidden');
+  guidedStep=step; updateStepDots(step);
+  if(step===2) startBreatheAnimation();
+  if(step===3) renderGuidedInsight();
+  if(step===5) setTimeout(()=>document.getElementById('g-calm-input').focus(),200);
+}
+
+function renderGuidedInsight(){
+  if(currentGuidedData){
+    document.getElementById('g-insight-loading').classList.add('hidden');
+    document.getElementById('g-quote').textContent=currentGuidedData.original||'';
+    document.getElementById('g-reframe').textContent=currentGuidedData.application||currentGuidedData.translation||'';
+    document.getElementById('g-insight-content').classList.remove('hidden');
+  } else {
+    document.getElementById('g-insight-loading').classList.remove('hidden');
+    document.getElementById('g-insight-content').classList.add('hidden');
+    const wait=setInterval(()=>{ if(currentGuidedData){clearInterval(wait);renderGuidedInsight();} },500);
+  }
+}
+
+function updateStepDots(step){
+  document.querySelectorAll('#guided-steps .sf-dot').forEach((d,i)=>{
+    d.className='sf-dot';
+    if(i<step-1) d.classList.add('done');
+    else if(i===step-1) d.classList.add('current');
+  });
+}
+
+function startBreatheAnimation(){
+  if(breatheInterval) clearInterval(breatheInterval);
+  const phases=[['Inhale','Expand your chest fully'],['Hold','Pause at the top'],['Exhale','Release completely'],['Hold','Empty and still']];
+  let pi=0;
+  const run=()=>{document.getElementById('breathe-label').textContent=phases[pi][0];document.getElementById('breathe-sub').textContent=phases[pi][1];pi=(pi+1)%phases.length;};
+  run(); breatheInterval=setInterval(run,3000);
+}
+
+function completeGuided(){
+  const input=document.getElementById('g-calm-input').value.trim();
+  if(breatheInterval){clearInterval(breatheInterval);breatheInterval=null;}
+  logSession({type:'meditate',mode:'guided',action:input,completed:true});
+  showModal('🌿','Reset Complete','You breathed. You saw clearly. You chose a path.',input||'Return to stillness');
+  guidedStep=1;
+  for(let i=2;i<=5;i++) document.getElementById(`g-step-${i}`).classList.add('hidden');
+  document.getElementById('g-step-1').classList.remove('hidden');
+  document.querySelectorAll('.state-chip').forEach(c=>c.classList.remove('active'));
+  updateStepDots(1);
+  document.getElementById('g-insight-content').classList.add('hidden');
+  document.getElementById('g-insight-loading').classList.remove('hidden');
+}
+
+async function analyzeJournal(){
+  const text=document.getElementById('journal-input').value.trim();
+  if(text.length<15) return;
+  document.getElementById('journal-loading').classList.remove('hidden');
+  document.getElementById('journal-result').classList.add('hidden');
+  document.getElementById('journal-error').classList.add('hidden');
+  try {
+    const data = await callAI(BEHAVIOR_SYSTEM, `Analyze this journal entry for behavioral patterns.\nEntry:\n"${text}"${getBehaviorMemory()}`);
+    document.getElementById('j-core').textContent=data.pattern||'';
+    document.getElementById('j-pattern').textContent=data.insight||'';
+    document.getElementById('j-principle').textContent=data.correction||'';
+    document.getElementById('journal-loading').classList.add('hidden');
+    document.getElementById('journal-result').classList.remove('hidden');
+  } catch(e){
+    document.getElementById('journal-loading').classList.add('hidden');
+    document.getElementById('journal-error-msg').textContent=e.message;
+    document.getElementById('journal-error').classList.remove('hidden');
+  }
+}
+
+// ══════════════════════════════════════════════════════════════
+// TIMER
+// ══════════════════════════════════════════════════════════════
+function getAudioCtx(){ if(!audioCtx) audioCtx=new(window.AudioContext||window.webkitAudioContext)(); return audioCtx; }
+function playChime(){
+  if(!soundOn) return;
+  try{
+    const ctx=getAudioCtx();
+    [[528,0],[660,.22],[792,.46]].forEach(([f,t])=>{
+      const o=ctx.createOscillator(),g=ctx.createGain();
+      o.connect(g);g.connect(ctx.destination);o.type='sine';o.frequency.value=f;
+      g.gain.setValueAtTime(0,ctx.currentTime+t);
+      g.gain.linearRampToValueAtTime(.14,ctx.currentTime+t+.06);
+      g.gain.exponentialRampToValueAtTime(.001,ctx.currentTime+t+1.8);
+      o.start(ctx.currentTime+t);o.stop(ctx.currentTime+t+2);
+    });
+  }catch(e){}
+}
+function triggerVibrate(){ if(!vibrateOn)return; try{if(navigator.vibrate)navigator.vibrate([200,100,200]);}catch(e){} }
+function setSCStyle(id,on){
+  const el=document.getElementById(id);if(!el)return;
+  el.style.background=on?'var(--green)':'var(--border)';
+  let s=document.getElementById('_s'+id);
+  if(!s){s=document.createElement('style');s.id='_s'+id;document.head.appendChild(s);}
+  s.textContent=`#${id}::after{transform:translateX(${on?18:0}px)!important}`;
+}
+function toggleSC(type){ if(type==='sound'){soundOn=!soundOn;setSCStyle('sw-sound',soundOn);}else{vibrateOn=!vibrateOn;setSCStyle('sw-vibrate',vibrateOn);} }
+function setTimerLen(min,el){
+  timerLen=min;timerSeconds=min*60;
+  document.querySelectorAll('.timer-len').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active');updateTimerDisplay();
+  if(timerInterval){clearInterval(timerInterval);timerInterval=null;}
+}
+function updateTimerDisplay(){
+  const m=Math.floor(timerSeconds/60),s=timerSeconds%60;
+  document.getElementById('timer-display').textContent=`${m}:${s.toString().padStart(2,'0')}`;
+}
+function startTimer(){
+  if(timerInterval)return;
+  try{getAudioCtx().resume();}catch(e){}
+  timerInterval=setInterval(()=>{
+    timerSeconds--;updateTimerDisplay();
+    if(timerSeconds<=0){
+      clearInterval(timerInterval);timerInterval=null;
+      playChime();triggerVibrate();
+      logSession({type:'meditate',mode:'silent',duration:timerLen,completed:true});
+      showModal('🕯','Silence Complete',`${timerLen} minute${timerLen>1?'s':''} of presence. The Stoic mind is a quiet one.`,'"Look within. Within is the fountain of good."');
+      timerSeconds=timerLen*60;updateTimerDisplay();
+    }
+  },1000);
+}
+function stopTimer(){ if(timerInterval){clearInterval(timerInterval);timerInterval=null;}timerSeconds=timerLen*60;updateTimerDisplay(); }
+
+// ══════════════════════════════════════════════════════════════
+// HISTORY
+// ══════════════════════════════════════════════════════════════
+function initHistory(){
+  const sessions=(LS.get('cmos_sessions')||[]).slice().reverse();
+  const p=getThemeProgress();
+  const struggles=sessions.filter(s=>s.type==='struggle').map(s=>s.issue).filter(Boolean);
+  const catCounts={};
+  struggles.forEach(iss=>{
+    const t=iss.toLowerCase();
+    if(/fear|afraid|anxious/.test(t)) catCounts.fear=(catCounts.fear||0)+1;
+    else if(/distract|procrastin|focus/.test(t)) catCounts.dist=(catCounts.dist||0)+1;
+    else if(/people|relationship|conflict/.test(t)) catCounts.people=(catCounts.people||0)+1;
+    else catCounts.other=(catCounts.other||0)+1;
+  });
+  const topCat=Object.entries(catCounts).sort((a,b)=>b[1]-a[1])[0];
+  const catNames={fear:'fear',dist:'distraction',people:'people conflicts',other:'uncertainty'};
+  const completedCount=sessions.filter(s=>s.completed).length;
+  const totalCount=sessions.length;
+  const pct=totalCount>0?Math.round((completedCount/totalCount)*100):0;
+
+  // Pull latest evening review for pattern
+  const lastEve=sessions.find(s=>s.type==='evening');
+
+  let html='';
+  if(lastEve&&lastEve.pattern) html+=`<div class="pattern-insight"><div class="pi-label">Last Evening Pattern</div><div class="pi-text">${lastEve.pattern}</div></div>`;
+  if(topCat&&topCat[1]>1) html+=`<div class="pattern-insight"><div class="pi-label">Recurring Struggle</div><div class="pi-text">Most entries involve <strong style="color:var(--orange)">${catNames[topCat[0]]}</strong> — ${topCat[1]} times logged.</div></div>`;
+  if(totalCount>0) html+=`<div class="pattern-insight"><div class="pi-label">Completion Rate</div><div class="pi-text"><strong style="color:var(--green)">${pct}%</strong> sessions ended with a locked action. ${p.used.length}/${THEMES.length} Stoic themes explored.</div></div>`;
+
+  // Show tomorrow intent if set today
+  const tmr=LS.get('cmos_tomorrow');
+  if(tmr&&tmr.date===new Date().toDateString()) html+=`<div class="pattern-insight" style="border-color:rgba(139,111,212,.3);background:linear-gradient(135deg,rgba(40,20,80,.4) 0%,var(--bg2) 100%)"><div class="pi-label" style="color:var(--eve-light)">Tomorrow's Intent</div><div class="pi-text" style="color:var(--text)">${tmr.action}</div></div>`;
+
+  document.getElementById('history-patterns').innerHTML=html||'<div class="pattern-insight"><div class="pi-label">No patterns yet</div><div class="pi-text">Complete more sessions to surface your behavioral patterns.</div></div>';
+
+  const badgeMap={home:'morning',struggle:'struggle',meditate:'meditate',evening:'eve'};
+  document.getElementById('history-list').innerHTML=sessions.slice(0,20).map(s=>{
+    const d=new Date(s.ts);
+    const dateStr=d.toLocaleDateString('en-US',{month:'short',day:'numeric',hour:'numeric',minute:'2-digit'});
+    const badge=badgeMap[s.type]||s.type;
+    let action='—';
+    if(s.type==='evening') action=s.tomorrowAction||s.tomorrowSuggestion||`Review complete (${s.score||0}%)`;
+    else action=s.action||s.issue||s.mode||'—';
+    return `<div class="hist-entry"><div class="hist-meta"><span class="hist-date">${dateStr}</span><span class="hist-badge ${badge}">${s.type}</span></div><div class="hist-action">${String(action).slice(0,80)}</div></div>`;
+  }).join('')||'<div style="font-size:13px;color:var(--textd);text-align:center;padding:20px">No sessions yet.</div>';
+}
+function clearHistory(){ if(confirm('Clear all session history?')){LS.del('cmos_sessions');LS.del('cmos_tomorrow');initHistory();} }
+
+// ══════════════════════════════════════════════════════════════
+// SETTINGS
+// ══════════════════════════════════════════════════════════════
+function initSettings(){
+  const key=getApiKey();
+  const inp=document.getElementById('api-key-input');
+  if(key){inp.value=key;setApiStatus(true);}else setApiStatus(false);
+  document.getElementById('model-select').value=getModel();
+  document.getElementById('model-display').textContent=getModel();
+  const nameInp=document.getElementById('user-name-input');
+  if(nameInp) nameInp.value=getUserName();
+  updateSettingsDisplay();
+}
+function setApiStatus(ok){ const el=document.getElementById('api-key-status');el.textContent=ok?'Key saved':'Not set';el.className='api-status '+(ok?'ok':'missing'); }
+function saveApiKey(){ const val=document.getElementById('api-key-input').value.trim();if(!val){setApiStatus(false);return;}localStorage.setItem('cmos_api_key',val);setApiStatus(true); }
+function toggleShowKey(){ const inp=document.getElementById('api-key-input');inp.type=inp.type==='password'?'text':'password'; }
+function saveModel(){ const val=document.getElementById('model-select').value;localStorage.setItem('cmos_model',val);document.getElementById('model-display').textContent=val; }
+function saveName(){ const val=document.getElementById('user-name-input').value.trim();localStorage.setItem('cmos_name',val); }
+function resetThemes(){ LS.del('cmos_themes');updateSettingsDisplay();document.getElementById('theme-bar').innerHTML=THEMES.map(t=>`<div class="theme-pill">${THEME_LABELS[t]}</div>`).join(''); }
+function clearCache(){ const keys=[];for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(k&&k.startsWith('cmos_home_'))keys.push(k);}keys.forEach(k=>localStorage.removeItem(k));alert('Cache cleared.'); }
+function updateSettingsDisplay(){ const p=getThemeProgress();const el=document.getElementById('themes-used-display');if(el)el.textContent=`${p.used.length} / ${THEMES.length}`; }
+
+// ══════════════════════════════════════════════════════════════
+// NAV + MODAL
+// ══════════════════════════════════════════════════════════════
+function goTo(screen){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById(`screen-${screen}`).classList.add('active');
+  document.getElementById(`nav-${screen}`).classList.add('active');
+  if(screen==='history') initHistory();
+  if(screen==='settings') initSettings();
+  if(screen==='evening') initEvening();
+  if(screen==='struggle') setTimeout(()=>document.getElementById('struggle-input').focus(),200);
+}
+
+function showModal(icon,title,sub,action){
+  document.getElementById('modal-icon').textContent=icon;
+  document.getElementById('modal-title').textContent=title;
+  document.getElementById('modal-sub').textContent=sub;
+  document.getElementById('modal-action').textContent=action;
+  document.getElementById('success-modal').classList.add('open');
+}
+function closeModal(){ document.getElementById('success-modal').classList.remove('open'); }
+function doneModal(){
+  closeModal();
+  selectedAction=null;
+  document.querySelectorAll('.action-chip').forEach(c=>c.classList.remove('selected'));
+  document.querySelectorAll('.qa-chip').forEach(c=>c.classList.remove('sel'));
+  ['home-lock','s-lock','g-calm-input','journal-input'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  document.getElementById('home-complete').disabled=true;
+  document.getElementById('struggle-results').classList.add('hidden');
+  document.getElementById('journal-result').classList.add('hidden');
+  goTo('home');
+}
+
+// ══════════════════════════════════════════════════════════════
+// UTIL
+// ══════════════════════════════════════════════════════════════
+function esc(s){ return String(s).replace(/'/g,"&#39;").replace(/"/g,'&quot;'); }
+function fbTap(btn,txt){ btn.textContent=txt;btn.style.color='var(--green)';btn.style.borderColor='var(--green)'; }
+
+// ══════════════════════════════════════════════════════════════
+// BOOT
+// ══════════════════════════════════════════════════════════════
+(function boot(){
+  document.getElementById('streak-num').textContent=LS.get('cmos_streak')||0;
+  setSCStyle('sw-sound',true);
+  setSCStyle('sw-vibrate',true);
+  setTimerLen(5,document.getElementById('tlen-5'));
+
+  if(!getApiKey()){
+    document.getElementById('home-ai-status').classList.add('hidden');
+    document.getElementById('home-error-msg').textContent='No API key found. Go to Settings (⚙) to add your OpenRouter key.';
+    document.getElementById('home-error').classList.remove('hidden');
+    document.getElementById('home-error').querySelector('button').textContent='Go to Settings';
+    document.getElementById('home-error').querySelector('button').onclick=()=>goTo('settings');
+    document.getElementById('home-date').textContent=formatDate();
+    const tod=getTimeOfDay();
+    const badge=document.getElementById('time-badge');
+    badge.textContent={morning:'Morning',midday:'Midday',evening:'Evening'}[tod];
+    badge.className=`time-badge ${tod}`;
+    document.getElementById('day-intro').textContent = getGreeting();
+    renderThemeBar(null);
+  } else {
+    loadHomeContent();
+  }
+})();
+</script>
+</body>
+</html>
