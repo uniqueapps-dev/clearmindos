@@ -1,5 +1,5 @@
 ## 🚀 Live App
-https://your-username.github.io/clearmindos/
+https://uniqueapps-dev.github.io/clearmindos/
 
 # clearmindos
 
