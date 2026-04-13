@@ -1,3 +1,6 @@
+## 🚀 Live App
+https://your-username.github.io/clearmindos/
+
 # clearmindos
 
 ClearMindOS (CmOS)
