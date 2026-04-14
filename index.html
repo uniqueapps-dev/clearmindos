@@ -5,7 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
 <meta name="apple-mobile-web-app-capable" content="yes"/>
 <meta name="theme-color" content="#08090D"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+<meta name="mobile-web-app-capable" content="yes"/>
 <title>ClearMind OS</title>
+<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Cdefs%3E%3ClinearGradient id='bg' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%23C8A420'/%3E%3Cstop offset='50%25' stop-color='%230D5C3A'/%3E%3Cstop offset='100%25' stop-color='%230A3D28'/%3E%3C/linearGradient%3E%3ClinearGradient id='txt' x1='0%25' y1='0%25' x2='0%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%23FFE57A'/%3E%3Cstop offset='50%25' stop-color='%23D4B356'/%3E%3Cstop offset='100%25' stop-color='%23A07820'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='512' height='512' rx='112' ry='112' fill='url(%23bg)'/%3E%3Crect width='512' height='512' rx='112' ry='112' fill='none' stroke='%23D4B356' stroke-width='16'/%3E%3Ctext x='64' y='340' font-family='Georgia,serif' font-size='300' font-weight='bold' fill='url(%23txt)'%3ECm%3C/text%3E%3C/svg%3E"/>
+<link rel="manifest" href="data:application/json,%7B%22name%22%3A%22ClearMind+OS%22%2C%22short_name%22%3A%22CmOS%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%2308090D%22%2C%22theme_color%22%3A%22%2308090D%22%2C%22start_url%22%3A%22.%22%7D"/>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
@@ -33,17 +37,17 @@ html,body{height:100%;width:100%;background:var(--bg);color:var(--text);font-fam
 .time-badge.afternoon{background:rgba(255,140,66,.15);color:var(--orange);border:1px solid rgba(255,140,66,.3)}
 .time-badge.evening  {background:rgba(196,160,255,.15);color:var(--purple);border:1px solid rgba(196,160,255,.3)}
 
-/* NAV — strict single-active */
+/* NAV — all icons gold, active is brighter */
 .bottom-nav{display:flex;border-top:1px solid var(--border);background:var(--bg1);flex-shrink:0;padding-bottom:env(safe-area-inset-bottom,0px)}
-.nav-btn{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:9px 2px 7px;gap:3px;background:none;border:none;cursor:pointer;transition:all .18s;position:relative;opacity:.55;filter:drop-shadow(0 0 3px rgba(255,215,0,.15))}
-.nav-btn:active{opacity:.4}
-.nav-btn.active{opacity:1;filter:drop-shadow(0 0 7px rgba(255,215,0,.5));color:var(--gold)}
-.nav-btn:not(.active){color:var(--textd)}
+.nav-btn{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:9px 2px 7px;gap:3px;background:none;border:none;cursor:pointer;transition:all .18s;position:relative;color:rgba(212,179,86,.45);filter:none}
+.nav-btn:active{opacity:.6}
+.nav-btn.active{color:var(--gold);filter:drop-shadow(0 0 6px rgba(212,179,86,.6))}
 .nav-btn.active::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:24px;height:2px;background:var(--gold);border-radius:0 0 2px 2px}
-.nav-btn.eve-btn.active{color:var(--eve-light);filter:drop-shadow(0 0 7px rgba(196,160,255,.5))}
-.nav-btn.eve-btn.active::before{background:var(--eve-light)}
-.nav-icon{font-size:18px;line-height:1}
-.nav-label{font-size:9px;letter-spacing:.07em;text-transform:uppercase;font-weight:600}
+.nav-btn.eve-btn{color:rgba(196,160,255,.45)}
+.nav-btn.eve-btn.active{color:var(--gold);filter:drop-shadow(0 0 6px rgba(212,179,86,.6))}
+.nav-btn.eve-btn.active::before{background:var(--gold)}
+.nav-icon{font-size:18px;line-height:1;color:inherit}
+.nav-label{font-size:9px;letter-spacing:.07em;text-transform:uppercase;font-weight:600;color:inherit}
 
 /* CARDS */
 .card{border-radius:14px;padding:16px 18px;margin-bottom:11px;border:1px solid var(--border);background:var(--bg2);animation:fadeUp .3s ease both}
@@ -562,9 +566,12 @@ html,body{height:100%;width:100%;background:var(--bg);color:var(--text);font-fam
     </div>
     <div class="settings-section">
       <div class="settings-section-title">Model</div>
-      <div class="settings-row">
-        <div><div class="settings-row-label">AI Model</div><div class="settings-row-sub" id="model-display">google/gemini-flash-1.5</div></div>
-        <select id="model-select" style="background:var(--bg3);border:1px solid var(--border);color:var(--text);padding:6px 10px;border-radius:8px;font-size:12px;outline:none" onchange="saveModel()">
+      <div class="settings-row" style="flex-direction:column;align-items:flex-start;gap:10px">
+        <div style="width:100%;display:flex;align-items:center;justify-content:space-between">
+          <div><div class="settings-row-label">AI Model</div><div class="settings-row-sub" id="model-display">google/gemini-flash-1.5</div></div>
+          <span id="model-status" style="font-size:10px;padding:3px 10px;border-radius:20px;font-weight:600;letter-spacing:.06em;background:rgba(62,207,160,.12);color:var(--green);border:1px solid rgba(62,207,160,.25)">Active</span>
+        </div>
+        <select id="model-select" style="width:100%;background:var(--bg3);border:1px solid var(--border);color:var(--text);padding:8px 10px;border-radius:8px;font-size:12px;outline:none" onchange="saveModel()">
           <option value="google/gemini-flash-1.5">Gemini Flash 1.5 (Fast · Free)</option>
           <option value="google/gemini-pro-1.5">Gemini Pro 1.5 (Balanced)</option>
           <option value="anthropic/claude-3-haiku">Claude 3 Haiku (Fast)</option>
@@ -572,6 +579,8 @@ html,body{height:100%;width:100%;background:var(--bg);color:var(--text);font-fam
           <option value="openai/gpt-4o-mini">GPT-4o Mini (Fast)</option>
           <option value="meta-llama/llama-3.1-8b-instruct:free">Llama 3.1 8B (Free)</option>
         </select>
+        <button class="cta-btn ghost" style="margin-top:0;padding:10px;font-size:12px" onclick="testModelConnection()">Test Connection</button>
+        <div id="model-test-result" style="font-size:12px;display:none;padding:8px 12px;border-radius:8px;margin-top:0"></div>
       </div>
     </div>
     <div class="settings-section">
@@ -855,7 +864,8 @@ async function loadHomeContent(){
   document.getElementById('home-error').classList.add('hidden');
   document.getElementById('home-content').classList.add('hidden');
   selectedAction=null;
-  document.getElementById('home-complete').disabled=true;
+  const btn=document.getElementById('home-complete');
+  if(btn) btn.disabled=true;
 
   const cached=LS.get(todayCacheKey());
   if(cached&&(Date.now()-cached.ts)<CACHE_TTL){renderHomeContent(cached.data,cached.theme);return;}
@@ -863,12 +873,22 @@ async function loadHomeContent(){
   try{
     const theme=pickNextTheme();
     const timeContext={morning:'morning reflection and setting intention',afternoon:'afternoon recalibration and recommitting to action',evening:'evening review and extracting wisdom'}[tod];
-    const data=await callAI(STOIC_SYSTEM,`Generate a Stoic passage for ${timeContext}. Focus on the theme of: ${theme}. Reflect Marcus Aurelius's voice and philosophy from Meditations.`);
+    let data;
+    try{
+      data=await callAI(STOIC_SYSTEM,`Generate a Stoic passage for ${timeContext}. Focus on the theme of: ${theme}. Reflect Marcus Aurelius's voice and philosophy from Meditations.`);
+    }catch(parseErr){
+      // If JSON parse fails, try raw extraction
+      const raw=parseErr.message||'';
+      if(raw.includes('parse')||raw.includes('format')){
+        // Try again with stricter instruction
+        data=await callAI(STOIC_SYSTEM+'\nCRITICAL: Output ONLY valid JSON. No other text.',`Generate a Stoic passage for ${timeContext}. Theme: ${theme}.`);
+      } else { throw parseErr; }
+    }
     LS.set(todayCacheKey(),{data,theme,ts:Date.now()});
     renderHomeContent(data,theme);
   }catch(e){
     document.getElementById('home-ai-status').classList.add('hidden');
-    document.getElementById('home-error-msg').textContent=e.message;
+    document.getElementById('home-error-msg').textContent=e.message||'Session generation failed. Check your API key in Settings.';
     document.getElementById('home-error').classList.remove('hidden');
   }
 }
@@ -1349,7 +1369,35 @@ function initSettings(){
 function setApiStatus(ok){const el=document.getElementById('api-key-status');el.textContent=ok?'Key saved':'Not set';el.className='api-status '+(ok?'ok':'missing');}
 function saveApiKey(){const val=document.getElementById('api-key-input').value.trim();if(!val){setApiStatus(false);return;}localStorage.setItem('cmos_api_key',val);setApiStatus(true);}
 function toggleShowKey(){const inp=document.getElementById('api-key-input');inp.type=inp.type==='password'?'text':'password';}
-function saveModel(){const val=document.getElementById('model-select').value;localStorage.setItem('cmos_model',val);document.getElementById('model-display').textContent=val;}
+function saveModel(){
+  const val=document.getElementById('model-select').value;
+  localStorage.setItem('cmos_model',val);
+  document.getElementById('model-display').textContent=val;
+  // Update active indicator
+  const ms=document.getElementById('model-status');
+  if(ms){ms.textContent='Changed';ms.style.background='rgba(255,140,66,.12)';ms.style.color='var(--orange)';ms.style.borderColor='rgba(255,140,66,.25)';}
+}
+
+async function testModelConnection(){
+  const btn=event.currentTarget;
+  const resultEl=document.getElementById('model-test-result');
+  const ms=document.getElementById('model-status');
+  btn.textContent='Testing…';btn.disabled=true;
+  resultEl.style.display='none';
+  try{
+    const data=await callAI('You are a test. Respond with JSON only.',`Respond with this exact JSON: {"status":"ok","model":"${getModel()}"}`);
+    resultEl.textContent=`✓ Connected — ${getModel().split('/').pop()}`;
+    resultEl.style.background='rgba(62,207,160,.1)';resultEl.style.color='var(--green)';resultEl.style.border='1px solid rgba(62,207,160,.25)';
+    resultEl.style.display='block';
+    if(ms){ms.textContent='Active ✓';ms.style.background='rgba(62,207,160,.12)';ms.style.color='var(--green)';ms.style.borderColor='rgba(62,207,160,.25)';}
+  }catch(e){
+    resultEl.textContent=`✗ ${e.message}`;
+    resultEl.style.background='rgba(242,95,92,.08)';resultEl.style.color='var(--red)';resultEl.style.border='1px solid rgba(242,95,92,.25)';
+    resultEl.style.display='block';
+    if(ms){ms.textContent='Error';ms.style.background='rgba(242,95,92,.12)';ms.style.color='var(--red)';ms.style.borderColor='rgba(242,95,92,.25)';}
+  }
+  btn.textContent='Test Connection';btn.disabled=false;
+}
 function saveName(){const val=document.getElementById('user-name-input').value.trim();localStorage.setItem('cmos_name',val);}
 function resetThemes(){LS.del('cmos_themes');updateSettingsDisplay();renderThemeTabs(null);}
 function clearCache(){const keys=[];for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(k&&k.startsWith('cmos_home_'))keys.push(k);}keys.forEach(k=>localStorage.removeItem(k));alert('Cache cleared.');}
@@ -1481,26 +1529,40 @@ function seedSampleData(){
 
 // ══ BOOT ═════════════════════════════════════════════════════
 (function boot(){
-  seedSampleData();
-  document.getElementById('streak-num').textContent=LS.get('cmos_streak')||0;
-  setTimerLen(5,document.getElementById('tlen-5'));
-  updateMedSettingsUI();
+  try{ seedSampleData(); }catch(e){}
+  const sn=document.getElementById('streak-num');
+  if(sn) sn.textContent=LS.get('cmos_streak')||0;
+  const t5=document.getElementById('tlen-5');
+  if(t5) setTimerLen(5,t5);
+  try{ updateMedSettingsUI(); }catch(e){}
 
   if(!getApiKey()){
-    document.getElementById('home-ai-status').classList.add('hidden');
-    document.getElementById('home-error-msg').textContent='No API key found. Go to Settings (⚙) to add your OpenRouter key.';
-    document.getElementById('home-error').classList.remove('hidden');
-    document.getElementById('home-error').querySelector('button').textContent='Go to Settings';
-    document.getElementById('home-error').querySelector('button').onclick=()=>goTo('settings');
-    document.getElementById('home-date').textContent=formatDate();
+    const aiSt=document.getElementById('home-ai-status');
+    const homeErr=document.getElementById('home-error');
+    const homeErrMsg=document.getElementById('home-error-msg');
+    if(aiSt) aiSt.classList.add('hidden');
+    if(homeErrMsg) homeErrMsg.textContent='No API key found. Go to Settings (⚙) to add your OpenRouter key.';
+    if(homeErr){
+      homeErr.classList.remove('hidden');
+      const retryBtn=homeErr.querySelector('button');
+      if(retryBtn){retryBtn.textContent='Go to Settings';retryBtn.onclick=()=>goTo('settings');}
+    }
+    const hd=document.getElementById('home-date');
+    if(hd) hd.textContent=formatDate();
     const tod=getTimeOfDay();
     const badge=document.getElementById('time-badge');
-    badge.textContent={morning:'Morning',afternoon:'Afternoon',evening:'Evening'}[tod];
-    badge.className=`time-badge ${tod}`;
-    renderHomeGreeting();
-    renderThemeTabs(null);
+    if(badge){badge.textContent={morning:'Morning',afternoon:'Afternoon',evening:'Evening'}[tod];badge.className=`time-badge ${tod}`;}
+    try{ renderHomeGreeting(); }catch(e){}
+    try{ renderThemeTabs(null); }catch(e){}
   }else{
-    loadHomeContent();
+    loadHomeContent().catch(e=>{
+      const aiSt=document.getElementById('home-ai-status');
+      const homeErr=document.getElementById('home-error');
+      const homeErrMsg=document.getElementById('home-error-msg');
+      if(aiSt) aiSt.classList.add('hidden');
+      if(homeErrMsg) homeErrMsg.textContent=e.message||'Failed to generate session.';
+      if(homeErr) homeErr.classList.remove('hidden');
+    });
   }
 
   if(!localStorage.getItem('cmos_seen_onboarding')){
